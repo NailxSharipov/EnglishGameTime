@@ -30,6 +30,12 @@
 		54948279282F8198009DAB25 /* HeartSlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54948277282F8198009DAB25 /* HeartSlotView.swift */; };
 		5494827B282FA576009DAB25 /* CenteredGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494827A282FA576009DAB25 /* CenteredGridLayout.swift */; };
 		5494827C282FA576009DAB25 /* CenteredGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494827A282FA576009DAB25 /* CenteredGridLayout.swift */; };
+		54DADB212830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
+		54DADB222830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
+		54DADB252830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */; };
+		54DADB262830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */; };
+		54DADB4E2831131C005BDE65 /* EndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB4D2831131C005BDE65 /* EndView.swift */; };
+		54DADB4F2831131C005BDE65 /* EndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB4D2831131C005BDE65 /* EndView.swift */; };
 		54E349BA282D08C10059AFD0 /* EnglishGameTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E349AA282D08BF0059AFD0 /* EnglishGameTimeApp.swift */; };
 		54E349BB282D08C10059AFD0 /* EnglishGameTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E349AA282D08BF0059AFD0 /* EnglishGameTimeApp.swift */; };
 		54E349BC282D08C10059AFD0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E349AB282D08BF0059AFD0 /* ContentView.swift */; };
@@ -66,6 +72,9 @@
 		5494824C282EB472009DAB25 /* GameBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBar.swift; sourceTree = "<group>"; };
 		54948277282F8198009DAB25 /* HeartSlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartSlotView.swift; sourceTree = "<group>"; };
 		5494827A282FA576009DAB25 /* CenteredGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredGridLayout.swift; sourceTree = "<group>"; };
+		54DADB202830CABC005BDE65 /* PressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAction.swift; sourceTree = "<group>"; };
+		54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordCell+ViewModel.swift"; sourceTree = "<group>"; };
+		54DADB4D2831131C005BDE65 /* EndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndView.swift; sourceTree = "<group>"; };
 		54E349AA282D08BF0059AFD0 /* EnglishGameTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishGameTimeApp.swift; sourceTree = "<group>"; };
 		54E349AB282D08BF0059AFD0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		54E349AC282D08C10059AFD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -128,6 +137,31 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		54DADB1F2830CAAA005BDE65 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				54DADB202830CABC005BDE65 /* PressAction.swift */,
+			);
+			path = Modifier;
+			sourceTree = "<group>";
+		};
+		54DADB232830DB1A005BDE65 /* Word */ = {
+			isa = PBXGroup;
+			children = (
+				5494823C282E5BA2009DAB25 /* WordCell.swift */,
+				54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */,
+			);
+			path = Word;
+			sourceTree = "<group>";
+		};
+		54DADB4C2831130B005BDE65 /* End */ = {
+			isa = PBXGroup;
+			children = (
+				54DADB4D2831131C005BDE65 /* EndView.swift */,
+			);
+			path = End;
+			sourceTree = "<group>";
+		};
 		54E349A4282D08BF0059AFD0 = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +204,7 @@
 		54E349C8282D08E50059AFD0 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				54DADB1F2830CAAA005BDE65 /* Modifier */,
 				54948229282E1D41009DAB25 /* App */,
 				5494821D282E1623009DAB25 /* Extension */,
 				54E349CF282D0ADA0059AFD0 /* Game */,
@@ -191,9 +226,10 @@
 		54E349CF282D0ADA0059AFD0 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				54DADB4C2831130B005BDE65 /* End */,
+				54DADB232830DB1A005BDE65 /* Word */,
 				54E349D0282D0B0F0059AFD0 /* GameView.swift */,
 				54E349E8282D1DB90059AFD0 /* GameView+ViewModel.swift */,
-				5494823C282E5BA2009DAB25 /* WordCell.swift */,
 				54948240282E6444009DAB25 /* Game.swift */,
 				54948243282E6681009DAB25 /* RandomGenerator.swift */,
 				5494824C282EB472009DAB25 /* GameBar.swift */,
@@ -318,9 +354,12 @@
 				54948247282E76C5009DAB25 /* TimeInterval+Format.swift in Sources */,
 				54E349DB282D0E190059AFD0 /* Word.swift in Sources */,
 				5494824D282EB472009DAB25 /* GameBar.swift in Sources */,
+				54DADB212830CABC005BDE65 /* PressAction.swift in Sources */,
+				54DADB4E2831131C005BDE65 /* EndView.swift in Sources */,
 				54948221282E19E4009DAB25 /* AppDelegate_iOS.swift in Sources */,
 				54948278282F8198009DAB25 /* HeartSlotView.swift in Sources */,
 				54E349D4282D0CF20059AFD0 /* LessonResource.swift in Sources */,
+				54DADB252830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */,
 				54E349EC282D25C90059AFD0 /* LessonCell.swift in Sources */,
 				54E349CA282D08F90059AFD0 /* SelectView.swift in Sources */,
 				54948244282E6681009DAB25 /* RandomGenerator.swift in Sources */,
@@ -345,9 +384,12 @@
 				54948248282E76C5009DAB25 /* TimeInterval+Format.swift in Sources */,
 				5494823E282E5BA2009DAB25 /* WordCell.swift in Sources */,
 				5494824E282EB472009DAB25 /* GameBar.swift in Sources */,
+				54DADB222830CABC005BDE65 /* PressAction.swift in Sources */,
+				54DADB4F2831131C005BDE65 /* EndView.swift in Sources */,
 				54948228282E1D38009DAB25 /* AppSettings.swift in Sources */,
 				54948279282F8198009DAB25 /* HeartSlotView.swift in Sources */,
 				54E349DC282D0E190059AFD0 /* Word.swift in Sources */,
+				54DADB262830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */,
 				54E349D5282D0CF20059AFD0 /* LessonResource.swift in Sources */,
 				54E349BD282D08C10059AFD0 /* ContentView.swift in Sources */,
 				54948245282E6681009DAB25 /* RandomGenerator.swift in Sources */,

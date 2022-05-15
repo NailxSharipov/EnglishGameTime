@@ -28,8 +28,8 @@ final class Game {
         case x12 = 12
     }
     
-    private var startTime: Date = Date()
-    private var endTime: Date = Date()
+    private var startTime: Date?
+    private var endTime: Date?
     private let gameLength: TimeInterval
     
     private let words: [Word]
@@ -46,9 +46,12 @@ final class Game {
     private let countMaxLevel: CountLevel
     private (set) var failWords = Set<Int>()
     private (set) var successWords = Set<Int>()
-    private (set) var nextWord: String = ""
+    private (set) var nextWordId: Int = .min
     private (set) var nextWords: [Word] = []
-    private (set) var isGameOver: Bool = false
+
+    var isGameOver: Bool {
+        timer == nil
+    }
 
     var lifeCount: Int {
         countToLose - failWords.count
@@ -61,9 +64,15 @@ final class Game {
     }
     
     var leftTime: TimeInterval {
+        guard let startTime = startTime else {
+            return 0
+        }
+
         let duration = Date().timeIntervalSince(startTime)
         return gameLength - duration
     }
+    
+    var nextWord: String { words[nextWordId].name }
     
     func timeText(leftTime: TimeInterval) -> String {
         leftTime.cleanFormat
@@ -91,7 +100,6 @@ final class Game {
     }
 
     func start() {
-        isGameOver = false
         startTime = Date()
         
         let timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
@@ -102,36 +110,33 @@ final class Game {
         RunLoop.main.add(timer, forMode: .default)
     }
     
-    func nextCircle() {
+    func reset() {
+        self.failWords = Set<Int>()
+        self.successWords = Set<Int>()
+        self.nextWordId = .min
+        self.randomGenerator = RandomGenerator(size: words.count)
+    }
+    
+    func nextRound() {
         let count = self.nextCount()
-        let indices = randomGenerator.getNext(count: count)
+        let round = randomGenerator.next(count: count)
         var list = [Word]()
-        for index in indices {
+        for index in round.list {
             list.append(words[index])
         }
-            
-        let rest = Set(indices).subtracting(successWords)
-        let nextIndex: Int
-        if let index = rest.randomElement() {
-            nextIndex = index
-        } else {
-            assertionFailure("index problem")
-            nextIndex = indices[0]
-        }
-        nextWord = words[nextIndex].name
+
+        nextWordId = words[round.uniq].id
         
         nextWords = list
     }
     
-    func put(word: String) -> Bool {
-        let success = nextWord == word
+    func put(wordId: Int) -> Bool {
+        let success = nextWordId == wordId
         if success {
-            self.addSuccess(word: word)
+            self.addSuccess(wordId: wordId)
         } else {
-            self.addFail(word: word)
+            self.addFail(wordId: wordId)
         }
-        nextWord = ""
-        
         return success
     }
     
@@ -139,22 +144,17 @@ final class Game {
         endTime = Date()
         timer?.invalidate()
         timer = nil
-        isGameOver = true
     }
     
-    private func addSuccess(word: String) {
-        if let index = words.firstIndex(where: { $0.name == word }) {
-            randomGenerator.addCount(index: index, value: words.count)
-            successWords.insert(index)
-        }
+    private func addSuccess(wordId: Int) {
+        successWords.insert(wordId)
         if successWords.count >= countToWin {
             self.endGame(isWin: true)
         }
     }
     
-    private func addFail(word: String) {
-        guard let index = words.firstIndex(where: { $0.name == word }) else { return }
-        failWords.insert(index)
+    private func addFail(wordId: Int) {
+        failWords.insert(wordId)
         if failWords.count >= countToLose {
             self.endGame(isWin: false)
         }

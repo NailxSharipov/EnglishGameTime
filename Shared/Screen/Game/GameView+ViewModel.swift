@@ -11,15 +11,19 @@ extension GameView {
     
     final class ViewModel: ObservableObject {
 
+        var isEndViewShown = false
+        
         private (set) var word: String = ""
         private (set) var time: String = ""
         private (set) var lifeCount: Int = 0
         private (set) var progress: Game.Progress = .init(value: 0, step: 0)
-        
-        private let resource: LessonResource
         private (set) var lessonId: Int = 0
-        private (set) var cells: [WordCell.Item] = []
+        private (set) var statistic: Game.Statistic = .init(failWords: [], time: 0, success: 0, isWin: false)
+        private (set) var cells: [WordCell.ViewModel] = []
+        
+        private var isRound: Bool = true
         private var game: Game?
+        private let resource: LessonResource
 
         init(resource: LessonResource) {
             self.resource = resource
@@ -50,6 +54,13 @@ extension GameView.ViewModel {
         
         await self.start(game: game)
     }
+
+    @MainActor
+    func repeatGame() {
+        guard let game = game else { return }
+        game.reset()
+        self.start(game: game)
+    }
     
     @MainActor
     private func start(game newGame: Game) {
@@ -60,29 +71,43 @@ extension GameView.ViewModel {
 
     private func nextWord() {
         guard let game = self.game, !game.isGameOver else { return }
-        game.nextCircle()
+        game.nextRound()
         
-        var cells = [WordCell.Item]()
+        var cells = [WordCell.ViewModel]()
         for word in game.nextWords {
             let image = word.images.randomElement()!
-            let cell = WordCell.Item(name: word.name, image: image, state: .none)
+            let cell = WordCell.ViewModel(id: word.id, name: word.name, image: image) { [weak self] in
+                self?.tap(wordId: word.id)
+            }
             cells.append(cell)
         }
         
-        self.word = game.nextWord
-        self.cells = cells
-        self.objectWillChange.send()
+        withAnimation(.easeIn(duration: 0.4)) {
+            self.word = game.nextWord
+            self.cells = cells
+            self.objectWillChange.send()
+        }
+        
+        isRound = true
     }
     
-    func tap(word: String) {
-        guard let game = self.game else { return }
-        let result = game.put(word: word)
+    private func tap(wordId: Int) {
+        guard
+            let game = self.game,
+            let cell = cells.first(where: { $0.id == wordId }),
+            isRound else { return }
+        let result = game.put(wordId: wordId)
         
         lifeCount = game.lifeCount
         progress = game.progress
+
+        cell.set(status: result ? .success : .fail)
         
-        self.animate(word: word, result: result) { [weak self] in
-            self?.nextWord()
+        if result {
+            isRound = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                self?.nextWord()
+            }
         }
     }
     
@@ -92,32 +117,21 @@ extension GameView.ViewModel {
     }
     
     private func endGame(statistic: Game.Statistic) {
-        print(statistic)
-    }
-    
-    private func animate(word: String, result: Bool, completion: @escaping () -> ()) {
-        guard let index = cells.firstIndex(where: { $0.name == word }) else {
-            assertionFailure("can not find cell")
-            completion()
-            return
-        }
-        withAnimation(.easeIn(duration: 0.3)) { [weak self] in
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) { [weak self] in
             guard let self = self else { return }
-            cells[index].state = result ? .success : .fail
+            self.statistic = statistic
+            self.isEndViewShown = true
             self.objectWillChange.send()
         }
-
-        
-        completion()
     }
-    
+
 }
 
 
 private extension Int {
     
     var winCount: Int {
-        let a = Int((0.8 * Double(self) / 5).rounded() * 5)
+        let a = Int((0.2 * Double(self) / 5).rounded() * 5)
         return a < self ? a : self
     }
     

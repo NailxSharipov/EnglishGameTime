@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WordData: Decodable {
-    
+
     let name: String
     let audio: String
     let images: [String]
@@ -17,12 +17,13 @@ struct WordData: Decodable {
 }
 
 struct Word {
-    
+
+    let id: Int
     let name: String
     let audio: String
     let images: [Image]
     
-    init?(root: URL, data: WordData) {
+    init?(index: Int, root: URL, data: WordData) {
         var images = [Image]()
         for name in data.images {
             let path = root.add(name: name).path
@@ -36,6 +37,7 @@ struct Word {
         audio = data.audio //root.add(name: data.audio)
         self.images = images
         name = data.name
+        id = index
     }
     
 }

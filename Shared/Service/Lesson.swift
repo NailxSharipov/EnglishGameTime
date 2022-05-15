@@ -26,7 +26,17 @@ struct Lesson {
     
     init(data: LessonData) {
         meta = Meta(data: data)
-        words = data.words.compactMap({ Word(root: data.root, data: $0) })
+        let n = data.words.count
+        var list = [Word]()
+        list.reserveCapacity(n)
+        var i = 0
+        for item in data.words {
+            if let word = Word(index: i, root: data.root, data: item) {
+                list.append(word)
+                i += 1
+            }
+        }
+        words = list
     }
     
 }

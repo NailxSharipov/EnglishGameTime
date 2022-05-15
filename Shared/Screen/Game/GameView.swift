@@ -23,29 +23,36 @@ struct GameView: View {
     }
     
     var body: some View {
-        VStack {
-            GameBar(time: viewModel.time, progress: viewModel.progress, lifeCount: viewModel.lifeCount)
-            Spacer(minLength: Layout.gridSpacing)
-            HStack {
-                Spacer(minLength: 24)
-                ZStack {
-                    Color.white
-                    Text(viewModel.word).fontWeight(.semibold).font(.largeTitle).foregroundColor(.black)
+        GeometryReader { rootProxy in
+            ZStack {
+                VStack {
+                    GameBar(time: viewModel.time, progress: viewModel.progress, lifeCount: viewModel.lifeCount)
+                    Spacer(minLength: Layout.gridSpacing)
+                    HStack {
+                        Spacer(minLength: 24)
+                        ZStack {
+                            Color.white
+                            Text(viewModel.word).fontWeight(.semibold).font(.largeTitle).foregroundColor(.black)
+                        }
+                        .frame(height: 80, alignment: .center)
+                        .cornerRadius(8)
+                        Spacer(minLength: 24)
+                    }
+                    Spacer(minLength: Layout.gridSpacing)
+                    GeometryReader { gridProxy in
+                        grid(size: gridProxy.size).task {
+                            await viewModel.start(lessonId: lessonId)
+                        }
+                    }
+                    Spacer(minLength: Layout.gridSpacing)
                 }
-                .frame(height: 80, alignment: .center)
-                .cornerRadius(8)
-                Spacer(minLength: 24)
-            }
-            Spacer(minLength: Layout.gridSpacing)
-            GeometryReader { geometryProxy in
-                grid(size: geometryProxy.size).task {
-                    await viewModel.start(lessonId: lessonId)
+                if viewModel.isEndViewShown {
+                    endView(size: rootProxy.size)
                 }
             }
-            Spacer(minLength: Layout.gridSpacing)
         }.toolbar {
             ToolbarItemGroup(placement: .automatic) {}
-        }
+        }.environmentObject(viewModel)
     }
     
     private func grid(size: CGSize) -> some View {
@@ -67,11 +74,7 @@ struct GameView: View {
                     spacing: Layout.gridSpacing
                 ) {
                     ForEach(viewModel.cells) { cell in
-                        WordCell(item: cell)
-                            .frame(width: a, height: a, alignment: .center)
-                            .onTapGesture() {
-                                viewModel.tap(word: cell.name)
-                            }
+                        WordCell(viewModel: cell).frame(width: a, height: a, alignment: .center)
                     }
                 }
                 .frame(width: layout.size.width, height: layout.size.height, alignment: .center)
@@ -79,6 +82,19 @@ struct GameView: View {
             }
             Spacer()
         }
+    }
+    
+    private func endView(size: CGSize) -> some View {
+        let m = min(size.width, size.height)
+        var a: CGFloat = trunc(0.6 * m)
+        if a < 300 {
+            a = m - 40
+        }
+
+        return EndView()
+            .zIndex(1)
+            .transition(.move(edge: .bottom))
+            .frame(width: a, height: a, alignment: .center)
     }
     
 }
