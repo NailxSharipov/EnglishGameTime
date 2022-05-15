@@ -1,0 +1,232 @@
+{
+    "id": 0,
+    "name": "ABC",
+    "words":
+    [
+        {
+            "name": "0",
+            "images": [
+                "0.png",
+                "0a.png",
+                "0b.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "1",
+            "images": [
+                "1.png",
+                "1a.png",
+                "1b.png",
+                "1c.png",
+                "1d.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "2",
+            "images": [
+                "2.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "3",
+            "images": [
+                "3.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "4",
+            "images": [
+                "4.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "5",
+            "images": [
+                "5.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "6",
+            "images": [
+                "6.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "7",
+            "images": [
+                "7.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "8",
+            "images": [
+                "8.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "9",
+            "images": [
+                "9.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "10",
+            "images": [
+                "10.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "11",
+            "images": [
+                "11.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "12",
+            "images": [
+                "12.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "13",
+            "images": [
+                "13.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "14",
+            "images": [
+                "14.png",
+                "14a.png",
+                "14b.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "15",
+            "images": [
+                "15.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "16",
+            "images": [
+                "16.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "17",
+            "images": [
+                "17.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "18",
+            "images": [
+                "18.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "19",
+            "images": [
+                "19.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "20",
+            "images": [
+                "20.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "21",
+            "images": [
+                "21.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "22",
+            "images": [
+                "22.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "23",
+            "images": [
+                "23.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "24",
+            "images": [
+                "24.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "25",
+            "images": [
+                "25.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "26",
+            "images": [
+                "26.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "27",
+            "images": [
+                "27.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "28",
+            "images": [
+                "28.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "29",
+            "images": [
+                "29.png"
+            ],
+            "audio": "1"
+        },
+        {
+            "name": "30",
+            "images": [
+                "30.png"
+            ],
+            "audio": "1"
+        }
+    ]
+}
