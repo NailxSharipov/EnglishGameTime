@@ -18,27 +18,54 @@ struct EndView: View {
             VStack {
                 Spacer()
                 HStack {
-                    RoundButton(name: "list.bullet") {
-                        withAnimation(.easeIn) {
-                            viewModel.isEndViewShown.toggle()
-                        }
+                    Spacer()
+                    heart(index: 0).frame(width: 50, height: 50, alignment: .center)
+                    Spacer()
+                    heart(index: 1).frame(width: 50, height: 50, alignment: .center)
+                    Spacer()
+                    heart(index: 2).frame(width: 50, height: 50, alignment: .center)
+                    Spacer()
+                }
+                Spacer()
+                HStack {
+                    Spacer()
+                    Image(systemName: "list.bullet")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .gesture(TapGesture().onEnded() {
+                            viewModel.pressLeaderBoard()
+                        })
+                    Spacer()
+                    Image(systemName: "repeat")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .gesture(TapGesture().onEnded() {
+                            viewModel.pressRepeat()
+                        })
+                    if viewModel.statistic.isWin && viewModel.nextPermision != .more {
+                        Spacer()
+                        Image(systemName: "arrow.right")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .gesture(TapGesture().onEnded() {
+                                viewModel.pressNext()
+                            })
                     }
-                    RoundButton(name: "repeat") {
-                        withAnimation(.easeIn) {
-                            viewModel.isEndViewShown.toggle()
-                        }
-                        viewModel.repeatGame()
-                    }
-                    RoundButton(name: "repeat") {
-                        withAnimation(.easeIn) {
-                            viewModel.isEndViewShown.toggle()
-                        }
-                        viewModel.repeatGame()
-                    }
+                    Spacer()
                 }.frame(height: 100, alignment: .center).padding(8)
             }
         }
     }
+    
+    private func heart(index: Int) -> Image {
+        let lifeCount = 3 - viewModel.statistic.failWords.count
+        if index < lifeCount {
+            return Image(systemName: "heart.fill").resizable()
+        } else {
+            return Image(systemName: "heart").resizable()
+        }
+    }
+    
 }
 
 private struct RoundButton: View {
@@ -48,9 +75,9 @@ private struct RoundButton: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack {
+            ZStack(alignment: .center) {
                 Circle().fill(.yellow)
-                Image(systemName: name)
+                Image(systemName: name).resizable().frame(width: 0.25 * proxy.size.width, height: 0.25 * proxy.size.height)
             }
         }.gesture(TapGesture().onEnded(action))
     }

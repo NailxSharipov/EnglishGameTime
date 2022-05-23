@@ -21,7 +21,7 @@ struct CenteredGridLayout {
     
     init(size: CGSize, count n: Int, minSpace s: CGFloat) {
         guard size.width > 0 && size.height > 0 && n > 0 else {
-            side = 0
+            side = 1
             count = 0
             spacing = 0
             self.size = .zero

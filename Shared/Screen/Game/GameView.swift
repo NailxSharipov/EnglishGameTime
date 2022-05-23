@@ -14,45 +14,74 @@ struct GameView: View {
     }
     
     @StateObject
-    var viewModel = ViewModel(resource: .shared)
+    var viewModel = ViewModel(lessonResource: .shared, permisionResource: .shared, progressResource: .shared, audioResource: .shared)
     
-    private let lessonId: Int
+    private let color: Color
+    private let transaction: OpenGameTransaction
     
-    init(lessonId: Int) {
-        self.lessonId = lessonId
+    init(color: Color, transaction: OpenGameTransaction) {
+        self.color = color
+        self.transaction = transaction
     }
     
     var body: some View {
         GeometryReader { rootProxy in
             ZStack {
-                VStack {
-                    GameBar(time: viewModel.time, progress: viewModel.progress, lifeCount: viewModel.lifeCount)
+                VStack(alignment: .center) {
+                    GameBarView(color: color).frame(height: 44).padding(.top, 20)
                     Spacer(minLength: Layout.gridSpacing)
-                    HStack {
-                        Spacer(minLength: 24)
-                        ZStack {
-                            Color.white
-                            Text(viewModel.word).fontWeight(.semibold).font(.largeTitle).foregroundColor(.black)
+                    if viewModel.isGameEnd {
+                        HStack {
+                            if viewModel.statistic.isWin {
+                            Spacer()
+                                Image(systemName: "list.bullet")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .gesture(TapGesture().onEnded() {
+                                        viewModel.pressLeaderBoard()
+                                    })
+                            }
+                            Spacer()
+                            Image(systemName: "arrow.clockwise")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .gesture(TapGesture().onEnded() {
+                                    viewModel.pressRepeat()
+                                })
+                            if viewModel.statistic.isWin && viewModel.nextPermision != .more {
+                                Spacer()
+                                Image(systemName: "arrow.right")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .gesture(TapGesture().onEnded() {
+                                        viewModel.pressNext()
+                                    })
+                            }
+                            Spacer()
                         }
-                        .frame(height: 80, alignment: .center)
-                        .cornerRadius(8)
-                        Spacer(minLength: 24)
-                    }
-                    Spacer(minLength: Layout.gridSpacing)
-                    GeometryReader { gridProxy in
-                        grid(size: gridProxy.size).task {
-                            await viewModel.start(lessonId: lessonId)
+                        .frame(height: 100, alignment: .center).padding(8)
+                        .transition(.opacity)
+                    } else {
+                        VStack {
+                            Text(viewModel.word)
+                                .font(.system(size: 60, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+                                .frame(alignment: .center)
+                                .cornerRadius(12)
+                                .padding(.top, 32)
+                            Spacer(minLength: Layout.gridSpacing)
+                            GeometryReader { gridProxy in
+                                grid(size: gridProxy.size)
+                            }
+                            Spacer(minLength: Layout.gridSpacing)
                         }
+                        .transition(.opacity)
                     }
-                    Spacer(minLength: Layout.gridSpacing)
                 }
-                if viewModel.isEndViewShown {
-                    endView(size: rootProxy.size)
-                }
-            }
-        }.toolbar {
-            ToolbarItemGroup(placement: .automatic) {}
-        }.environmentObject(viewModel)
+            }.background(.pink)
+        }.environmentObject(viewModel).task {
+            await viewModel.start(transaction: transaction)
+        }
     }
     
     private func grid(size: CGSize) -> some View {
@@ -92,9 +121,10 @@ struct GameView: View {
         }
 
         return EndView()
+            .frame(width: a, height: a, alignment: .center)
             .zIndex(1)
             .transition(.move(edge: .bottom))
-            .frame(width: a, height: a, alignment: .center)
+        
     }
     
 }

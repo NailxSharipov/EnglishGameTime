@@ -11,22 +11,30 @@ extension GameView {
     
     final class ViewModel: ObservableObject {
 
-        var isEndViewShown = false
-        
+        private (set) var isGameEnd = false
+
         private (set) var word: String = ""
         private (set) var time: String = ""
-        private (set) var lifeCount: Int = 0
+        private (set) var lifeCount: Int = 3
         private (set) var progress: Game.Progress = .init(value: 0, step: 0)
         private (set) var lessonId: Int = 0
-        private (set) var statistic: Game.Statistic = .init(failWords: [], time: 0, success: 0, isWin: false)
+        private (set) var nextPermision: Permision = .more
+        private (set) var statistic: Game.Statistic = .init(failWords: [], time: 0, success: 0, isWin: false, isTimeEnd: false)
         private (set) var cells: [WordCell.ViewModel] = []
-        
+        private (set) var onClose: ((Bool) -> ())?
+
         private var isRound: Bool = true
         private var game: Game?
-        private let resource: LessonResource
+        private let lessonResource: LessonResource
+        private let permisionResource: PermisionResource
+        private let progressResource: ProgressResource
+        private let audioResource: AudioResource
 
-        init(resource: LessonResource) {
-            self.resource = resource
+        init(lessonResource: LessonResource, permisionResource: PermisionResource, progressResource: ProgressResource, audioResource: AudioResource) {
+            self.lessonResource = lessonResource
+            self.permisionResource = permisionResource
+            self.progressResource = progressResource
+            self.audioResource = audioResource
         }
     }
     
@@ -34,39 +42,58 @@ extension GameView {
 
 extension GameView.ViewModel {
 
+    func start(transaction: OpenGameTransaction) async {
+        self.onClose = transaction.onClose
+        await self.start(lessonId: transaction.id)
+    }
+    
     func start(lessonId: Int) async {
         self.lessonId = lessonId
-        let lesson = await resource.read(lessonId: lessonId)
-
+        
+        let lesson = await lessonResource.read(lessonId: lessonId)
+        let nextPermision = await permisionResource.permissions(id: lessonId + 1)
+        
         let game = Game(
             words: lesson.words,
+//            countToWin: 3,
             countToWin: lesson.words.count.winCount,
             countToLose: 3,
-            timeForWord: 5,
+            timeForWord: 3,
+            beforeTimeEnding: 8.5,
             countMaxLevel: .x12,
             onUpdateTime: { [weak self] time in
                 self?.update(time: time)
             },
             onGameEnd: { [weak self] statistic in
                 self?.endGame(statistic: statistic)
+            },
+            onTimeIsEnding: { [weak self] in
+                self?.timeEnding()
             }
         )
-        
-        await self.start(game: game)
+
+        await self.start(game: game, nextPermision: nextPermision)
     }
 
     @MainActor
     func repeatGame() {
         guard let game = game else { return }
         game.reset()
-        self.start(game: game)
+        self.start(game: game, nextPermision: nextPermision)
     }
     
     @MainActor
-    private func start(game newGame: Game) {
+    private func start(game newGame: Game, nextPermision: Permision) {
+        audioResource.play(music: .gameFast)
         self.game = newGame
-        newGame.start()
-        self.nextWord()
+        self.lifeCount = newGame.lifeCount
+        self.nextPermision = nextPermision
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            guard let self = self else { return }
+            newGame.start()
+            self.nextWord()
+        }
     }
 
     private func nextWord() {
@@ -77,16 +104,21 @@ extension GameView.ViewModel {
         for word in game.nextWords {
             let image = word.images.randomElement()!
             let cell = WordCell.ViewModel(id: word.id, name: word.name, image: image) { [weak self] in
+                self?.press()
+            } onTap: { [weak self] in
                 self?.tap(wordId: word.id)
             }
             cells.append(cell)
         }
         
-        withAnimation(.easeIn(duration: 0.4)) {
-            self.word = game.nextWord
+        withAnimation(.easeIn(duration: 0.4)) { [weak self] in
+            guard let self = self else { return }
+            self.word = game.nextWord.name
             self.cells = cells
             self.objectWillChange.send()
         }
+        
+        game.nextWord.audio?.play()
         
         isRound = true
     }
@@ -96,19 +128,35 @@ extension GameView.ViewModel {
             let game = self.game,
             let cell = cells.first(where: { $0.id == wordId }),
             isRound else { return }
-        let result = game.put(wordId: wordId)
-        
-        lifeCount = game.lifeCount
-        progress = game.progress
 
+        let result = game.put(wordId: wordId)
+
+        withAnimation(.linear(duration: 0.5)) { [weak self, lifeCount = game.lifeCount, progress = game.progress] in
+            guard let self = self else { return }
+            self.lifeCount = lifeCount
+            self.progress = progress
+        }
+
+        if !result {
+            ImpactGenerator.share.sendError()
+        }
+        
         cell.set(status: result ? .success : .fail)
         
         if result {
             isRound = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
                 self?.nextWord()
             }
+            self.audioResource.play(sound: .success)
+        } else {
+            self.audioResource.play(sound: .incorrect)
         }
+    }
+    
+    private func press() {
+        self.audioResource.play(sound: .click)
+        ImpactGenerator.share.prepare()
     }
     
     private func update(time: String) {
@@ -116,22 +164,113 @@ extension GameView.ViewModel {
         self.objectWillChange.send()
     }
     
+    private func timeEnding() {
+        self.audioResource.play(sound: .timeIsRunnigOut)
+    }
+    
     private func endGame(statistic: Game.Statistic) {
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
             guard let self = self else { return }
+            self.audioResource.stopMusic()
+            
+            if statistic.isWin {
+                self.audioResource.play(sound: .win)
+            } else if !statistic.isTimeEnd {
+                self.audioResource.play(sound: .fail)
+            }
+
             self.statistic = statistic
-            self.isEndViewShown = true
+            
+            Task {
+                if let progress = Progress.Lesson(id: self.lessonId, statistic: statistic) {
+                    await self.progressResource.save(progress)
+                }
+                await MainActor.run { [weak self] in
+                    self?.showEnd(statistic: statistic)
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func showEnd(statistic: Game.Statistic) {
+        withAnimation(.easeIn(duration: 0.5)) { [weak self] in
+            guard let self = self else { return }
+            self.word = ""
+            self.cells = []
+            self.time = ""
+            self.isGameEnd = true
             self.objectWillChange.send()
         }
     }
+    
+    @MainActor
+    func tapClose() {
+        game?.stop()
+        self.onClose?(false)
+    }
 
+    func nextLesson() async {
+        guard nextPermision != .more else { return }
+        let nextId = self.lessonId + 1
+        await self.start(lessonId: nextId)
+    }
+    
+    func pressHome() {
+        self.audioResource.stopMusic()
+        self.audioResource.stop(sound: .timeIsRunnigOut)
+        self.game?.stop()
+        
+        let isSuccess = (game?.isGameOver ?? false) && self.statistic.isWin
+
+        self.onClose?(isSuccess)
+    }
+    
+}
+
+// EndView
+extension GameView.ViewModel {
+    
+    func pressLeaderBoard() {
+        guard isGameEnd else { return }
+        debugPrint("pressLeaderBoard")
+        audioResource.play(sound: .click)
+    }
+
+    func pressRepeat() {
+        guard isGameEnd else { return }
+        withAnimation(.easeIn) { [weak self] in
+            guard let self = self else { return }
+            self.isGameEnd.toggle()
+            self.objectWillChange.send()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.repeatGame()
+        }
+        audioResource.play(sound: .click)
+    }
+    
+    func pressNext() {
+        guard isGameEnd else { return }
+        withAnimation(.easeIn) { [weak self] in
+            guard let self = self else { return }
+            self.isGameEnd.toggle()
+            self.objectWillChange.send()
+        }
+        
+        Task { [weak self] in
+            await self?.nextLesson()
+        }
+
+        audioResource.play(sound: .click)
+    }
 }
 
 
 private extension Int {
     
     var winCount: Int {
-        let a = Int((0.2 * Double(self) / 5).rounded() * 5)
+        let a = Int((0.8 * Double(self) / 5).rounded() * 5)
         return a < self ? a : self
     }
     

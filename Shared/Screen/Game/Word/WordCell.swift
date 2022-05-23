@@ -15,14 +15,15 @@ struct WordCell: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .background(viewModel.color)
+                .fill(.white)
                 .cornerRadius(8)
-            viewModel.image
-                .resizable()
+            viewModel.image.resizable().blur(radius: viewModel.blur)
+            CheckView(visible: $viewModel.isCheck)
+            CrossView(visible: $viewModel.isCross)
         }
         .scaleEffect(viewModel.scale)
         .padding(10)
         .modifier(PressAction(onUpdate: viewModel.onPress))
     }
-  
+
 }

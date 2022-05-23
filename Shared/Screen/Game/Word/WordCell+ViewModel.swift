@@ -10,11 +10,11 @@ import SwiftUI
 extension WordCell {
 
     final class ViewModel: Identifiable, ObservableObject {
-
+        
         enum Status {
-            case fail
-            case success
             case none
+            case success
+            case fail
         }
         
         let id: Int
@@ -22,33 +22,51 @@ extension WordCell {
         let image: Image
         
         @Published
-        private (set) var color: Color = .white
-        
+        var isCheck: Bool = false
+        @Published
+        var isCross: Bool = false
+        @Published
+        private (set) var blur: CGFloat = 0
         @Published
         private (set) var scale: CGFloat = 1
 
         private let onTap: () -> ()
+        private let onPress: () -> ()
         
-        init(id: Int, name: String, image: Image, onTap: @escaping () -> ()) {
+        init(id: Int, name: String, image: Image, onPress: @escaping () -> (), onTap: @escaping () -> ()) {
             self.id = id
             self.name = name
             self.image = image
+            self.onPress = onPress
             self.onTap = onTap
         }
         
         func set(status: Status) {
-            let newColor: Color
-            switch status {
-            case .none:
-                newColor = .white
-            case .success:
-                newColor = .green
-            case .fail:
-                newColor = .red
+            withAnimation(.easeOut(duration: 0.1)) { [weak self] in
+                guard let self = self else { return }
+                switch status {
+                case .none:
+                    self.blur = 0
+                case .success:
+                    self.blur = 8
+                case .fail:
+                    self.blur = 8
+                }
             }
             
-            withAnimation(.easeOut(duration: 0.1)) {
-                color = newColor
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.7)) { [weak self] in
+                guard let self = self else { return }
+                switch status {
+                case .none:
+                    self.isCheck = false
+                    self.isCheck = false
+                case .success:
+                    self.isCheck = true
+                    self.isCross = false
+                case .fail:
+                    self.isCheck = false
+                    self.isCross = true
+                }
             }
         }
         
@@ -56,7 +74,8 @@ extension WordCell {
             let newScale: CGFloat
             switch event {
             case .press:
-                newScale = 1.03
+                onPress()
+                newScale = 1.08
             case .release:
                 onTap()
                 newScale = 1
@@ -64,8 +83,8 @@ extension WordCell {
                 newScale = 1
             }
 
-            withAnimation(.easeOut(duration: 0.08)) {
-                scale = newScale
+            withAnimation(.easeOut(duration: 0.08)) { [weak self] in
+                self?.scale = newScale
             }
         }
         
