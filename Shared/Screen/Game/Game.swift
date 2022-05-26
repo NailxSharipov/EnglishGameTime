@@ -25,7 +25,7 @@ final class Game {
     enum CountLevel: Int {
         case x2 = 2
         case x4 = 4
-        case x9 = 9
+        case x6 = 6
         case x12 = 12
     }
     
@@ -170,7 +170,7 @@ final class Game {
     
     private func addFail(wordId: Int) {
         failWords.insert(wordId)
-        if failWords.count >= countToLose {
+        if failWords.count > countToLose {
             self.endGame(isWin: false, isTimeEnd: false)
         }
     }
@@ -203,7 +203,7 @@ final class Game {
         case 2...3:
             level = .x4
         case 4...5:
-            level = .x9
+            level = .x6
         case 6...:
             level = .x12
         default:

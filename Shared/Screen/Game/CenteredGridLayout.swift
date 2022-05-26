@@ -28,6 +28,10 @@ struct CenteredGridLayout {
             return
         }
         
+        // exclude situation with gigantic cells
+        let maxSide = max(size.width, size.height)
+        let maxSize = 1.6 * (maxSide / 4)
+
         let pair = Self.bestPair(size: size, count: n)
         
         let n0 = Double(pair.a)
@@ -36,7 +40,7 @@ struct CenteredGridLayout {
         let a0 = ((size.width - s * (n0 - 1)) / n0).rounded(.toNearestOrAwayFromZero)
         let a1 = ((size.height - s * (n1 - 1)) / n1).rounded(.toNearestOrAwayFromZero)
 
-        side = min(a0, a1)
+        side = min(min(a0, a1), maxSize)
         count = pair.a
         spacing = s
         

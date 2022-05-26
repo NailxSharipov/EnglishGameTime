@@ -10,90 +10,41 @@ import Foundation
 final class PermisionResource {
     
     static let shared = PermisionResource()
+    private static let freeLevelsCount = 2
     
     private let subscriptionResource: SubscriptionResource = .shared
-    private let progressResource: ProgressResource = .shared
-    private let lessonResource: LessonResource = .shared
     private let shareResource: ShareResource = .shared
+    private let progressResource: ProgressResource = .shared
 
-    
-    func permissions() async -> [Int: Permision] {
-        let lessons = await lessonResource.readMeta()
-        let progressMap = await progressResource.allLesson()
-        
-        let isShareBonus = shareResource.isAnyFriendInvited
-        let isSubscribed = subscriptionResource.isSubscribed
-        
-        let lessonsCount = lessons.count
-        let totalWin = progressMap.count
-        var map = [Int: Permision]()
-
-        for lesson in lessons {
-            let permission = self.permission(
-                id: lesson.id,
-                lessonsCount: lessonsCount,
-                totalWin: totalWin,
-                isSubscribed: isSubscribed,
-                isShareBonus: isShareBonus
-            )
-            map[lesson.id] = permission
-        }
-
-        return map
-    }
-    
-    func permissions(id: Int) async -> Permision {
-        let lessons = await lessonResource.readMeta()
-        let progressMap = await progressResource.allLesson()
-        
-        let isShareBonus = shareResource.isAnyFriendInvited
-        let isSubscribed = subscriptionResource.isSubscribed
-        
-        let lessonsCount = lessons.count
-        let totalWin = progressMap.count
-        
-        let permission = self.permission(
-            id: id,
-            lessonsCount: lessonsCount,
-            totalWin: totalWin,
-            isSubscribed: isSubscribed,
-            isShareBonus: isShareBonus
-        )
-        
-        return permission
-    }
-
-    private func permission(id: Int, lessonsCount: Int, totalWin: Int, isSubscribed: Bool, isShareBonus: Bool) -> Permision {
-        let permission: Permision
-
-        if isSubscribed {
-            let lastOpenIndex = totalWin + 3
-
-            if id >= lessonsCount {
-                permission = .coming
-            } else if id < lastOpenIndex {
-                permission = .opened
-            } else {
-                permission = .closed
-            }
-            
-        } else {
-            let avalibleCount = isShareBonus ? 6 : 3
-            let lastOpenIndex = totalWin + 2
-
-            if id == avalibleCount {
-                permission = .more
-            } else if id > avalibleCount {
-                permission = .hidden
-            } else if id < lastOpenIndex {
-                permission = .opened
-            } else {
-                permission = .closed
-            }
+    func permissions() async -> Permission {
+        guard !subscriptionResource.isSubscribed else {
+            return .all
         }
         
-        return permission
+        var set = Set<Int>(0...1)
+        
+        let anyWin = await progressResource.load().lessons.contains(where: { $0.lifeCount != nil })
+        guard anyWin else {
+            return .introduce(set)
+        }
+        
+        if shareResource.isAnyFriendInvited {
+            set.formUnion(2...3)
+        }
+
+        return .limit(set)
     }
-    
+
+    func isPermited(lessonId: Int) async -> Bool {
+        switch await self.permissions() {
+        case .all:
+            return true
+        case .introduce:
+            return lessonId < Self.freeLevelsCount
+        case .limit(let idSet):
+            return idSet.contains(lessonId)
+        }
+        
+    }
     
 }

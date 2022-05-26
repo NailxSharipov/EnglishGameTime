@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct GameView: View {
-
+    
     private enum Layout {
-        static let gridSpacing: CGFloat = 24
+        static let buttonSize: CGFloat = 36
     }
     
     @StateObject
@@ -25,18 +25,62 @@ struct GameView: View {
     }
     
     var body: some View {
-        GeometryReader { rootProxy in
-            ZStack {
+        GeometryReader { mainProxy in
+            ZStack(alignment: .top) {
+                HStack(alignment: .center) {
+                    Image(systemName: "house.fill").resizable().aspectRatio(contentMode: .fit).foregroundColor(.white)
+                        .frame(width: Layout.buttonSize, height: Layout.buttonSize)
+                        .gesture(TapGesture().onEnded({
+                            viewModel.pressHome()
+                    })).padding(.leading, 20)
+                    Spacer()
+                    self.heart(index: 2, lifeCount: viewModel.lifeCount)
+                    self.heart(index: 1, lifeCount: viewModel.lifeCount)
+                    self.heart(index: 0, lifeCount: viewModel.lifeCount).padding(.trailing, 20)
+                }.frame(height: 44).padding(.top, 20)
+                
                 VStack(alignment: .center) {
-                    GameBarView(color: color).frame(height: 44).padding(.top, 20)
-                    Spacer(minLength: Layout.gridSpacing)
                     if viewModel.isGameEnd {
+                        if viewModel.statistic.isWin {
+                            ZStack(alignment: .center) {
+                                Text("You win!")
+                                    .font(.system(
+                                        size: mainProxy.isIPad ? 40 : 20,
+                                        weight: .semibold,
+                                        design: .monospaced
+                                    ))
+                                    .foregroundColor(.white)
+                                    .frame(alignment: .center)
+                                FireWorkView(
+                                    animation: .init(
+                                        count: 14...20,
+                                        blust: 9...12,
+                                        first: .init(maxLifeTime: 1.5...2.4, speed: 1.6...2.2, size: 2, friction: 0.99),
+                                        second: .init(maxLifeTime: 1.7...2.1, speed: 0.6...1.0, size: 2, friction: 0.98),
+                                        gravity: -0.4
+                                    ),
+                                    animate: true
+                                )
+                            }
+                        } else {
+                            Text("You lose!")
+                                .font(.system(
+                                    size: mainProxy.isIPad ? 40 : 20,
+                                    weight: .semibold,
+                                    design: .monospaced
+                                ))
+                                .foregroundColor(.white)
+                                .frame(alignment: .center)
+                        }
+                        Spacer()
                         HStack {
                             if viewModel.statistic.isWin {
-                            Spacer()
+                                Spacer()
                                 Image(systemName: "list.bullet")
                                     .resizable()
-                                    .frame(width: 50, height: 50)
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.white)
+                                    .frame(width: Layout.buttonSize, height: Layout.buttonSize)
                                     .gesture(TapGesture().onEnded() {
                                         viewModel.pressLeaderBoard()
                                     })
@@ -44,15 +88,19 @@ struct GameView: View {
                             Spacer()
                             Image(systemName: "arrow.clockwise")
                                 .resizable()
-                                .frame(width: 50, height: 50)
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.white)
+                                .frame(width: Layout.buttonSize, height: Layout.buttonSize)
                                 .gesture(TapGesture().onEnded() {
                                     viewModel.pressRepeat()
                                 })
-                            if viewModel.statistic.isWin && viewModel.nextPermision != .more {
+                            if viewModel.statistic.isWin && viewModel.nextPermision {
                                 Spacer()
                                 Image(systemName: "arrow.right")
                                     .resizable()
-                                    .frame(width: 50, height: 50)
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.white)
+                                    .frame(width: Layout.buttonSize, height: Layout.buttonSize)
                                     .gesture(TapGesture().onEnded() {
                                         viewModel.pressNext()
                                     })
@@ -62,69 +110,78 @@ struct GameView: View {
                         .frame(height: 100, alignment: .center).padding(8)
                         .transition(.opacity)
                     } else {
-                        VStack {
-                            Text(viewModel.word)
-                                .font(.system(size: 60, weight: .semibold, design: .monospaced))
+                        VStack(alignment: .center, spacing: 0) {
+                            Text(viewModel.time)
+                                .font(.system(
+                                    size: mainProxy.isIPad ? 40 : 20,
+                                    weight: .semibold,
+                                    design: .monospaced
+                                ))
                                 .foregroundColor(.white)
-                                .frame(alignment: .center)
-                                .cornerRadius(12)
-                                .padding(.top, 32)
-                            Spacer(minLength: Layout.gridSpacing)
+                                .frame(height: 44, alignment: .center)
+                                .padding(.top, 20)
+                            ProgressBarView(color: .white, value: viewModel.progress.value)
+                                .frame(width: mainProxy.isIPad ? 200 : 100, height: 4, alignment: .center)
+                                .padding(.top, mainProxy.isIPad ? 20 : 0)
+                            Text(viewModel.word)
+                                .font(.system(size: mainProxy.isIPad ? 60 : 36, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+                                .id("name \(viewModel.word)")
+                                .padding(.top, 20)
                             GeometryReader { gridProxy in
-                                grid(size: gridProxy.size)
+                                grid(size: gridProxy.size, spacing: mainProxy.isIPad ? 24 : 4)
                             }
-                            Spacer(minLength: Layout.gridSpacing)
+                            if mainProxy.isIPad {
+                                Spacer(minLength: 8)
+                            }
                         }
                         .transition(.opacity)
                     }
                 }
-            }.background(.pink)
-        }.environmentObject(viewModel).task {
+            }
+        }
+        .background(color)
+        .task {
             await viewModel.start(transaction: transaction)
         }
     }
     
-    private func grid(size: CGSize) -> some View {
+    private func grid(size: CGSize, spacing: CGFloat) -> some View {
         let n = viewModel.cells.count
         let layout = CenteredGridLayout(
-            size: CGSize(width: size.width - 2 * Layout.gridSpacing, height: size.height),
+            size: CGSize(width: size.width - 2 * spacing, height: size.height),
             count: n,
-            minSpace: Layout.gridSpacing
+            minSpace: spacing
         )
         let columns = layout.columns
         let a = layout.side
         
-        return HStack {
-            Spacer()
-            VStack {
-                Spacer()
-                LazyVGrid(
-                    columns: columns,
-                    spacing: Layout.gridSpacing
-                ) {
-                    ForEach(viewModel.cells) { cell in
-                        WordCell(viewModel: cell).frame(width: a, height: a, alignment: .center)
-                    }
+        return VStack(alignment: .center) {
+            LazyVGrid(
+                columns: columns,
+                spacing: spacing
+            ) {
+                ForEach(viewModel.cells) { cell in
+                    WordCell(viewModel: cell).frame(width: a, height: a, alignment: .center)
                 }
-                .frame(width: layout.size.width, height: layout.size.height, alignment: .center)
-                Spacer()
             }
-            Spacer()
-        }
+        }.frame(width: size.width, height: size.height)
     }
     
-    private func endView(size: CGSize) -> some View {
-        let m = min(size.width, size.height)
-        var a: CGFloat = trunc(0.6 * m)
-        if a < 300 {
-            a = m - 40
+    private func heart(index: Int, lifeCount: Int) -> some View {
+        if index < lifeCount {
+            return Image(systemName: "heart.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 30, height: 30)
+                .foregroundColor(.white)
+        } else {
+            return Image(systemName: "heart")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 30, height: 30)
+                .foregroundColor(.white)
         }
+    }
 
-        return EndView()
-            .frame(width: a, height: a, alignment: .center)
-            .zIndex(1)
-            .transition(.move(edge: .bottom))
-        
-    }
-    
 }

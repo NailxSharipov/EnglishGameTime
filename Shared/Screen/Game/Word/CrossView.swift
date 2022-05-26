@@ -12,14 +12,7 @@ struct CrossView: View {
     @StateObject
     private var viewModel = ViewModel()
     
-    @Binding
-    var visible: Bool {
-        didSet {
-            guard oldValue != visible else { return }
-            viewModel.set(visible: visible)
-        }
-    }
-    
+    let visible: Bool
     let lineWeight: CGFloat = 0.15
     let color: Color = .red
     

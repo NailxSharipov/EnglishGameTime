@@ -11,7 +11,9 @@ extension MainView {
     
     final class ViewModel: ObservableObject {
 
+        var isShareTipVisible: Bool = false
         var isShareOpen: Bool = false
+        var isStoreOpen: Bool = false
         var isMain: Bool {
             switch openGameState {
             case .closed:
@@ -21,6 +23,12 @@ extension MainView {
             }
         }
         
+        var isIntroduction: Bool { cells.count < 3 }
+        
+        private (set) var color: Color
+        private (set) var colorIndex: Int
+        var colors: [Color] { colorResource.colors }
+
         private (set) var shareLink: URL = Bundle.main.bundleURL
         private let lessonResource: LessonResource
         private let audioResource: AudioResource
@@ -28,16 +36,22 @@ extension MainView {
         private let permisionResource: PermisionResource
         private let rateResource: RateResource
         private let shareResource: ShareResource
+        private let colorResource: ColorResource
+        private let subscriptionResource: SubscriptionResource
         private (set) var openGameState: OpenGameState = .closed
         private (set) var cells: [LessonCell.ViewModel] = []
         
-        init(resource: LessonResource, audioResource: AudioResource, progressResource: ProgressResource, permisionResource: PermisionResource, rateResource: RateResource, shareResource: ShareResource) {
+        init(resource: LessonResource, audioResource: AudioResource, progressResource: ProgressResource, permisionResource: PermisionResource, rateResource: RateResource, shareResource: ShareResource, colorResource: ColorResource, subscriptionResource: SubscriptionResource) {
             self.lessonResource = resource
             self.audioResource = audioResource
             self.progressResource = progressResource
             self.permisionResource = permisionResource
             self.rateResource = rateResource
             self.shareResource = shareResource
+            self.colorResource = colorResource
+            self.subscriptionResource = subscriptionResource
+            color = colorResource.color
+            colorIndex = colorResource.colorIndex
         }
     }
     
@@ -74,7 +88,22 @@ extension MainView.ViewModel {
         }
         
         if success {
-            rateResource.rate()
+            let isRated = rateResource.isRated
+            let isShare = shareResource.isAnyFriendInvited && !subscriptionResource.isSubscribed
+            
+            if !isRated && !isShare {
+                if Bool.random() {
+                    rateResource.rate()
+                } else {
+                    isShareTipVisible = true
+                    objectWillChange.send()
+                }
+            } else if !isRated {
+                rateResource.rate()
+            } else if !isShare {
+                isShareTipVisible = true
+                objectWillChange.send()
+            }
         }
     }
     
@@ -86,33 +115,55 @@ extension MainView.ViewModel {
     private func reloadCells() async {
         let list = await lessonResource.readMeta()
         let progressMap = await progressResource.allLesson()
-        let permisionMap = await permisionResource.permissions()
+        let permision = await permisionResource.permissions()
         
         var cells = [LessonCell.ViewModel]()
         
-        for lesson in list {
-            let permision = permisionMap[lesson.id] ?? .coming
-            let style: LessonCell.ViewModel.Style
-            switch permision {
-            case .opened:
+        switch permision {
+        case .all:
+            for lesson in list {
                 let lifeCount = progressMap[lesson.id]?.lifeCount
-                style = .opened(.init(title: lesson.name, lifeCount: lifeCount))
-            case .closed:
-                style = .closed
-            case .more:
-                style = .more
-            case .coming:
-                style = .coming
-            case .hidden:
-                continue
-            }
 
-            let cell = LessonCell.ViewModel(
-                id: lesson.id,
-                style: style
-            )
-            
-            cells.append(cell)
+                let cell = LessonCell.ViewModel(
+                    id: lesson.id,
+                    lesson: .init(title: lesson.name, lifeCount: lifeCount ?? 0),
+                    style: lifeCount != nil ? .won : .open
+                )
+                
+                cells.append(cell)
+            }
+        case .introduce(let idSet):
+            for lesson in list where idSet.contains(lesson.id) {
+                let lifeCount = progressMap[lesson.id]?.lifeCount
+
+                let cell = LessonCell.ViewModel(
+                    id: lesson.id,
+                    lesson: .init(title: lesson.name, lifeCount: lifeCount ?? 0),
+                    style: lifeCount != nil ? .won : .open
+                )
+                cells.append(cell)
+            }
+        case .limit(let idSet):
+            for lesson in list {
+                let lifeCount = progressMap[lesson.id]?.lifeCount
+
+                let style: LessonCell.ViewModel.Style
+                if !idSet.contains(lesson.id) {
+                    style = .pay
+                } else if lifeCount != nil {
+                    style = .won
+                } else {
+                    style = .open
+                }
+                
+                let cell = LessonCell.ViewModel(
+                    id: lesson.id,
+                    lesson: .init(title: lesson.name, lifeCount: lifeCount ?? 0),
+                    style: style
+                )
+                
+                cells.append(cell)
+            }
         }
 
         await self.set(cells: cells)
@@ -128,6 +179,24 @@ extension MainView.ViewModel {
         guard let url = Self.storeLink, !isShareOpen else { return }
         self.shareLink = url
         self.isShareOpen = true
+        self.objectWillChange.send()
+    }
+    
+    func pressStore() {
+//        guard let url = Self.storeLink, !isStoreOpen else { return }
+//        self.shareLink = url
+//        self.isStoreOpen = true
+//
+        isShareTipVisible = true
+        self.objectWillChange.send()
+    }
+    
+    func pressCloseInviteFriend() {
+//        guard let url = Self.storeLink, !isStoreOpen else { return }
+//        self.shareLink = url
+//        self.isStoreOpen = true
+//
+        isShareTipVisible = false
         self.objectWillChange.send()
     }
     
@@ -149,4 +218,13 @@ extension MainView.ViewModel {
         return URL(string: string)
     }
     
+    func setColor(index: Int) {
+        colorResource.set(index: index)
+        withAnimation(.linear(duration: 0.5)) { [weak self] in
+            guard let self = self else { return }
+            self.color = colorResource.color
+            self.colorIndex = colorResource.colorIndex
+            self.objectWillChange.send()
+        }
+    }
 }

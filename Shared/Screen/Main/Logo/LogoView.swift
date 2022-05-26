@@ -85,21 +85,20 @@ private final class ViewModel: ObservableObject {
     
     func start() {
 #if os(iOS)
-        guard motion.isMagnetometerAvailable else { return }
-        motion.magnetometerUpdateInterval = 1.0 / 60.0
-        if !motion.isMagnetometerActive {
-            motion.startMagnetometerUpdates()
+        guard motion.isGyroAvailable else { return }
+        motion.gyroUpdateInterval = 1.0 / 60.0
+        if !motion.isGyroActive {
+            motion.startGyroUpdates()
         }
 #endif
         guard self.timer == nil else { return }
         let timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
             guard let self = self else { return }
 #if os(iOS)
-            if let data = self.motion.magnetometerData {
-                let a = data.magneticField.x * data.magneticField.y * data.magneticField.z
-                debugPrint("magneticField: \(a)")
-                let s = max(min(a / 400_000, 1), -1)
-                self.scale = 1.2 + 0.2 * s
+            if let data = self.motion.gyroData {
+                let a = data.rotationRate.z
+                self.scale += 0.015 * a
+                self.scale = max(min(1.25, self.scale), 0.75)
             }
 #endif
             self.time = Date()
@@ -117,8 +116,8 @@ private final class ViewModel: ObservableObject {
             self.timer = nil
         }
 #if os(iOS)
-        if motion.isMagnetometerActive {
-            motion.stopMagnetometerUpdates()
+        if motion.isGyroActive {
+            motion.stopGyroUpdates()
         }
 #endif
     }

@@ -9,8 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     
-    let color: Color
-    
     @StateObject
     private var viewModel = ViewModel(
         resource: .shared,
@@ -18,7 +16,9 @@ struct MainView: View {
         progressResource: .shared,
         permisionResource: .shared,
         rateResource: .shared,
-        shareResource: .shared
+        shareResource: .shared,
+        colorResource: .shared,
+        subscriptionResource: .shared
     )
     
     @Namespace
@@ -32,32 +32,75 @@ struct MainView: View {
                         .padding(.top, 20)
                     Text("Big Ban English")
                         .font(.system(size: 52, weight: .semibold, design: .monospaced))
-                        .foregroundColor(color)
+                        .foregroundColor(viewModel.color)
                         .padding(.top, 24)
                     grid(size: proxy.size)
                         .padding(.top, 24)
+                    if !viewModel.isIntroduction {
+                        Text("more coming soon")
+                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                            .foregroundColor(viewModel.color)
+                            .padding(.top, 8)
+                    }
+                    Spacer(minLength: 60)
                 }.task {
                     await viewModel.load()
                 }
             }
             
             if case let .opend(transaction) = viewModel.openGameState {
-                GameView(color: color, transaction: transaction)
+                GameView(color: viewModel.color, transaction: transaction)
                     .zIndex(1)
                     .matchedGeometryEffect(id: transaction.id, in: openGameNameSpace)
             }
             ZStack {
-                Button("Share") {
+                ZStack(alignment: .center) {
+                    Image(systemName: "star.bubble")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(viewModel.color)
+                }
+                .frame(width: 60, height: 60)
+                .background(.ultraThickMaterial)
+                .cornerRadius(30)
+                .gesture(TapGesture().onEnded() {
+                    viewModel.pressStore()
+                }).padding(12)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+            VStack(alignment: .center) {
+                Spacer()
+                ColorGrid().frame(height: 30).padding(.bottom, 16)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            if viewModel.isShareTipVisible {
+                InviteFriendPromtView(color: viewModel.color) { [weak viewModel] in
+                    viewModel?.pressCloseInviteFriend()
+                }.ignoresSafeArea()
+            }
+            ZStack {
+                ZStack(alignment: .center) {
+                    Image(systemName: "square.and.arrow.up")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(viewModel.color)
+                }
+                .frame(width: 60, height: 60)
+                .background(.ultraThickMaterial)
+                .cornerRadius(30)
+                .gesture(TapGesture().onEnded() {
                     viewModel.pressShare()
-                }.padding(40)
+                }).padding(12)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
+        .background(.white)
+        .environmentObject(viewModel)
 #if os(iOS)
         .sheet(isPresented: $viewModel.isShareOpen, content: {
             ShareActivityView(shareLink: viewModel.shareLink) {
                 viewModel.onSuccessShare()
             }
-        })
+        }).preferredColorScheme(.light)
 #endif
     }
 
@@ -69,16 +112,17 @@ struct MainView: View {
         
         return LazyVGrid(columns: columns, spacing: spacing) {
             ForEach(viewModel.cells) { cell in
-                if cell.isOpen {
-                    LessonCell(color: color, viewModel: cell)
-                        .frame(width: a, height: a, alignment: .center)
-                        .onTapGesture() {
-                            viewModel.tap(id: cell.id)
-                        }
-                        .matchedGeometryEffect(id: cell.id, in: openGameNameSpace)
-                } else {
-                    Rectangle().frame(width: a, height: a, alignment: .center)
+                ZStack {
+                    if cell.isOpen {
+                        LessonCell(color: viewModel.color, viewModel: cell)
+                            .frame(width: a, height: a, alignment: .center)
+                            .onTapGesture() {
+                                viewModel.tap(id: cell.id)
+                            }
+                    }
                 }
+                .matchedGeometryEffect(id: cell.id, in: openGameNameSpace)
+                .frame(width: a, height: a)
             }
         }
     }
@@ -93,7 +137,7 @@ struct MainView: View {
             h = 0.25 * w
         }
         
-        return LogoView(color: color, alpha: 0.5, animate: viewModel.isMain)
+        return LogoView(color: viewModel.color, alpha: 0.5, animate: viewModel.isMain)
             .frame(width: w, height: h)
     }
 }

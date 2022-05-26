@@ -106,9 +106,7 @@ final class AudioResource {
             await self.load()
         }
         guard let audio = sounds[sound] else { return }
-        if audio.isPlaying {
-            audio.currentTime = 0
-        }
+        audio.currentTime = 0
         audio.play()
     }
     
@@ -133,9 +131,11 @@ final class AudioResource {
         if !isLoaded {
             await self.load()
         }
-        guard music != prevMusic else { return }
-        if let prev = prevMusic {
-            musics[prev]?.stop()
+        if let prev = prevMusic, let prevAudio = musics[prev] {
+            if music == prevMusic && prevAudio.isPlaying {
+                return
+            }
+            prevAudio.stop()
         }
         
         if let audio = musics[music] {
@@ -154,10 +154,10 @@ final class AudioResource {
     }
     
     func stopMusic() async {
-        if let prev = prevMusic {
-            musics[prev]?.stop()
-            prevMusic = nil
+        for music in musics {
+            music.value.stop()
         }
+        self.prevMusic = nil
     }
 
     func stopMusic() {

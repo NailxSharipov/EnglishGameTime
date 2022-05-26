@@ -18,7 +18,7 @@ extension GameView {
         private (set) var lifeCount: Int = 3
         private (set) var progress: Game.Progress = .init(value: 0, step: 0)
         private (set) var lessonId: Int = 0
-        private (set) var nextPermision: Permision = .more
+        private (set) var nextPermision: Bool = false
         private (set) var statistic: Game.Statistic = .init(failWords: [], time: 0, success: 0, isWin: false, isTimeEnd: false)
         private (set) var cells: [WordCell.ViewModel] = []
         private (set) var onClose: ((Bool) -> ())?
@@ -51,7 +51,7 @@ extension GameView.ViewModel {
         self.lessonId = lessonId
         
         let lesson = await lessonResource.read(lessonId: lessonId)
-        let nextPermision = await permisionResource.permissions(id: lessonId + 1)
+        let nextPermision = await permisionResource.isPermited(lessonId: lessonId + 1)
         
         let game = Game(
             words: lesson.words,
@@ -83,11 +83,12 @@ extension GameView.ViewModel {
     }
     
     @MainActor
-    private func start(game newGame: Game, nextPermision: Permision) {
+    private func start(game newGame: Game, nextPermision: Bool) {
         audioResource.play(music: .gameFast)
         self.game = newGame
         self.lifeCount = newGame.lifeCount
         self.nextPermision = nextPermision
+        self.progress = newGame.progress
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             guard let self = self else { return }
@@ -174,6 +175,7 @@ extension GameView.ViewModel {
             self.audioResource.stopMusic()
             
             if statistic.isWin {
+                self.audioResource.stop(sound: .timeIsRunnigOut)
                 self.audioResource.play(sound: .win)
             } else if !statistic.isTimeEnd {
                 self.audioResource.play(sound: .fail)
@@ -211,7 +213,7 @@ extension GameView.ViewModel {
     }
 
     func nextLesson() async {
-        guard nextPermision != .more else { return }
+        guard nextPermision else { return }
         let nextId = self.lessonId + 1
         await self.start(lessonId: nextId)
     }
@@ -239,6 +241,10 @@ extension GameView.ViewModel {
 
     func pressRepeat() {
         guard isGameEnd else { return }
+        self.lifeCount = 3
+        self.progress = .init(value: 0, step: 0)
+        self.time = ""
+        
         withAnimation(.easeIn) { [weak self] in
             guard let self = self else { return }
             self.isGameEnd.toggle()

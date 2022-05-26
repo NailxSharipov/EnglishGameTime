@@ -25,7 +25,7 @@ final class RateResource {
             UserDefaults.standard.bool(forKey: Self.saveKey)
         }
         set {
-            UserDefaults.standard.set(true, forKey: Self.saveKey)
+            UserDefaults.standard.set(newValue, forKey: Self.saveKey)
         }
     }
     

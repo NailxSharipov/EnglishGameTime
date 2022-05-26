@@ -18,8 +18,8 @@ struct WordCell: View {
                 .fill(.white)
                 .cornerRadius(8)
             viewModel.image.resizable().blur(radius: viewModel.blur)
-            CheckView(visible: $viewModel.isCheck)
-            CrossView(visible: $viewModel.isCross)
+            CheckView(visible: viewModel.isCheck)
+            CrossView(visible: viewModel.isCross)
         }
         .scaleEffect(viewModel.scale)
         .padding(10)

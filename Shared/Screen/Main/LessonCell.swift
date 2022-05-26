@@ -11,24 +11,25 @@ struct LessonCell: View {
     
     final class ViewModel: Identifiable, ObservableObject {
         
-        struct OpenData {
+        struct Lesson {
             let title: String
-            var lifeCount: Int?
+            var lifeCount: Int
         }
         
         enum Style {
-            case opened(OpenData)       // can play
-            case closed                 // locked
-            case more                   // subdcribe
-            case coming                 // coming soon
+            case won
+            case open
+            case pay
         }
         
         let id: Int
+        let lesson: Lesson
         var style: Style
         var isOpen: Bool = true
         
-        init(id: Int, style: Style) {
+        init(id: Int, lesson: Lesson, style: Style) {
             self.id = id
+            self.lesson = lesson
             self.style = style
         }
         
@@ -39,40 +40,51 @@ struct LessonCell: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack {
-                switch viewModel.style {
-                case .opened(let data):
+            switch viewModel.style {
+            case .won:
+                ZStack(alignment: .center) {
                     Rectangle().fill(color).cornerRadius(8)
                     VStack {
                         Spacer()
-                        if let lifeCount = data.lifeCount {
-                            HStack {
-                                Spacer()
-                                self.heart(index: 0, lifeCount: lifeCount, size: proxy.size)
-                                Spacer()
-                                self.heart(index: 1, lifeCount: lifeCount, size: proxy.size)
-                                Spacer()
-                                self.heart(index: 2, lifeCount: lifeCount, size: proxy.size)
-                                Spacer()
-                            }
+                        HStack {
+                            Spacer()
+                            self.heart(index: 0, lifeCount: viewModel.lesson.lifeCount, size: proxy.size)
+                            Spacer()
+                            self.heart(index: 1, lifeCount: viewModel.lesson.lifeCount, size: proxy.size)
+                            Spacer()
+                            self.heart(index: 2, lifeCount: viewModel.lesson.lifeCount, size: proxy.size)
                             Spacer()
                         }
-                        
-                        Text(data.title)
-                            .font(.system(size: 20, weight: .semibold, design: .monospaced))
+                        Spacer()
+                        Text(viewModel.lesson.title)
+                            .font(.system(size: 16, weight: .semibold, design: .monospaced))
                             .foregroundColor(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
                         Spacer()
                     }
-                case .closed:
-                    Rectangle().fill(Color(white: 0, opacity: 0.5)).border(.gray, width: 4)
-                        .cornerRadius(8)
-                case .more:
-                    Rectangle().fill(Color(red: 1, green: 1, blue: 0, opacity: 0.5)).border(.yellow, width: 4)
-                        .cornerRadius(8)
-                case .coming:
-                    Rectangle().fill(Color(white: 0, opacity: 0.1)).border(.green, width: 4)
-                        .cornerRadius(8)
                 }
+            case .open:
+                ZStack(alignment: .center) {
+                    Rectangle().fill(color).cornerRadius(8)
+                    Text(viewModel.lesson.title)
+                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                        .foregroundColor(.white)
+                        .opacity(0.6)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                }
+            case .pay:
+                ZStack(alignment: .center) {
+                    Text(viewModel.lesson.title)
+                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                        .foregroundColor(color)
+                        .padding(4)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(style: .init(lineWidth: 4, lineCap: .round, lineJoin: .round, dash: [16, 16])).foregroundColor(color)
+                }.opacity(0.5)
             }
         }
     }
@@ -82,6 +94,7 @@ struct LessonCell: View {
         let a = ceil(0.18 * size.width)
         return Image(systemName: name)
             .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(width: a, height: a, alignment: .center)
             .foregroundColor(.white)
     }

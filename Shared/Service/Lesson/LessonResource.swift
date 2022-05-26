@@ -10,6 +10,7 @@ import SwiftUI
 #endif
 import Foundation
 
+//https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html
 actor LessonResource {
     
     static let shared = LessonResource()
@@ -68,9 +69,9 @@ actor LessonResource {
     
     func read(lessonId: Int) async -> Lesson {
         let list = await readData()
-        let data = list.first(where: { $0.id == lessonId }) ?? data[0]
+        let lesson = list.first(where: { $0.id == lessonId }) ?? data[0]
         
-        return Lesson(data: data)
+        return Lesson(data: lesson)
     }
     
     
@@ -116,3 +117,4 @@ private extension FileManager {
     }
     
 }
+
