@@ -86,6 +86,12 @@
 		54B9E79A283270CE001F3D6B /* URL+FileName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B9E798283270CE001F3D6B /* URL+FileName.swift */; };
 		54B9E79C28327EC0001F3D6B /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 54B9E79B28327EC0001F3D6B /* Music */; };
 		54B9E79D28327EC0001F3D6B /* Music in Resources */ = {isa = PBXBuildFile; fileRef = 54B9E79B28327EC0001F3D6B /* Music */; };
+		54CBAD4E2840969D00B05333 /* replicas.json in Resources */ = {isa = PBXBuildFile; fileRef = 54CBAD4D2840969D00B05333 /* replicas.json */; };
+		54CBAD4F2840969D00B05333 /* replicas.json in Resources */ = {isa = PBXBuildFile; fileRef = 54CBAD4D2840969D00B05333 /* replicas.json */; };
+		54CBAD52284096C300B05333 /* ReplicaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD51284096C300B05333 /* ReplicaSource.swift */; };
+		54CBAD53284096C300B05333 /* ReplicaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD51284096C300B05333 /* ReplicaSource.swift */; };
+		54CBAD5528409BDE00B05333 /* Replica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD5428409BDE00B05333 /* Replica.swift */; };
+		54CBAD5628409BDE00B05333 /* Replica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD5428409BDE00B05333 /* Replica.swift */; };
 		54DADB212830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
 		54DADB222830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
 		54DADB252830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */; };
@@ -164,6 +170,9 @@
 		54B9E79428326E0E001F3D6B /* Sound */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sound; sourceTree = "<group>"; };
 		54B9E798283270CE001F3D6B /* URL+FileName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+FileName.swift"; sourceTree = "<group>"; };
 		54B9E79B28327EC0001F3D6B /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Music; sourceTree = "<group>"; };
+		54CBAD4D2840969D00B05333 /* replicas.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = replicas.json; sourceTree = "<group>"; };
+		54CBAD51284096C300B05333 /* ReplicaSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplicaSource.swift; sourceTree = "<group>"; };
+		54CBAD5428409BDE00B05333 /* Replica.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Replica.swift; sourceTree = "<group>"; };
 		54DADB202830CABC005BDE65 /* PressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAction.swift; sourceTree = "<group>"; };
 		54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordCell+ViewModel.swift"; sourceTree = "<group>"; };
 		54E349AA282D08BF0059AFD0 /* EnglishGameTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishGameTimeApp.swift; sourceTree = "<group>"; };
@@ -344,6 +353,15 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		54CBAD50284096B300B05333 /* Replica */ = {
+			isa = PBXGroup;
+			children = (
+				54CBAD51284096C300B05333 /* ReplicaSource.swift */,
+				54CBAD5428409BDE00B05333 /* Replica.swift */,
+			);
+			path = Replica;
+			sourceTree = "<group>";
+		};
 		54DADB1F2830CAAA005BDE65 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,6 +394,7 @@
 		54E349A9282D08BF0059AFD0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				54CBAD4D2840969D00B05333 /* replicas.json */,
 				54B9E79B28327EC0001F3D6B /* Music */,
 				54B9E79428326E0E001F3D6B /* Sound */,
 				54948239282E270D009DAB25 /* Lesson */,
@@ -450,6 +469,7 @@
 		54E349D9282D0D1C0059AFD0 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				54CBAD50284096B300B05333 /* Replica */,
 				5402968E283CB8BB000B463A /* Color */,
 				54F8A024283BAB8F0037E931 /* Store */,
 				54B638BC2834CDD800C8C87A /* Permision */,
@@ -561,6 +581,7 @@
 			files = (
 				54B9E79528326E0E001F3D6B /* Sound in Resources */,
 				5494823A282E270D009DAB25 /* Lesson in Resources */,
+				54CBAD4E2840969D00B05333 /* replicas.json in Resources */,
 				54B9E79C28327EC0001F3D6B /* Music in Resources */,
 				54E349BE282D08C10059AFD0 /* Assets.xcassets in Resources */,
 			);
@@ -572,6 +593,7 @@
 			files = (
 				54B9E79628326E0E001F3D6B /* Sound in Resources */,
 				5494823B282E270D009DAB25 /* Lesson in Resources */,
+				54CBAD4F2840969D00B05333 /* replicas.json in Resources */,
 				54B9E79D28327EC0001F3D6B /* Music in Resources */,
 				54E349BF282D08C10059AFD0 /* Assets.xcassets in Resources */,
 			);
@@ -591,6 +613,7 @@
 				54E349BC282D08C10059AFD0 /* ContentView.swift in Sources */,
 				54053F44283E93C500F2C60F /* FireWorkView.swift in Sources */,
 				54948247282E76C5009DAB25 /* TimeInterval+Format.swift in Sources */,
+				54CBAD52284096C300B05333 /* ReplicaSource.swift in Sources */,
 				54E349DB282D0E190059AFD0 /* Word.swift in Sources */,
 				54B638B62834A4DB00C8C87A /* Progress.swift in Sources */,
 				54B9E78F28324348001F3D6B /* OpenGameTransaction.swift in Sources */,
@@ -602,6 +625,7 @@
 				542E8B05283AAD2800D6D7D4 /* EggView.swift in Sources */,
 				54F8A02D283C05850037E931 /* GeometryProxy.swift in Sources */,
 				54B638BE2834CDED00C8C87A /* PermisionResource.swift in Sources */,
+				54CBAD5528409BDE00B05333 /* Replica.swift in Sources */,
 				542E8AFF283AA73700D6D7D4 /* BigBanView.swift in Sources */,
 				54948221282E19E4009DAB25 /* AppDelegate_iOS.swift in Sources */,
 				54948278282F8198009DAB25 /* HeartSlotView.swift in Sources */,
@@ -651,6 +675,7 @@
 				54E349CD282D0AA00059AFD0 /* MainView+ViewModel.swift in Sources */,
 				54053F45283E93C500F2C60F /* FireWorkView.swift in Sources */,
 				54948248282E76C5009DAB25 /* TimeInterval+Format.swift in Sources */,
+				54CBAD53284096C300B05333 /* ReplicaSource.swift in Sources */,
 				5494823E282E5BA2009DAB25 /* WordCell.swift in Sources */,
 				54B638B72834A4DB00C8C87A /* Progress.swift in Sources */,
 				54B9E79028324348001F3D6B /* OpenGameTransaction.swift in Sources */,
@@ -662,6 +687,7 @@
 				542E8B06283AAD2800D6D7D4 /* EggView.swift in Sources */,
 				54F8A02E283C05850037E931 /* GeometryProxy.swift in Sources */,
 				54B638BF2834CDED00C8C87A /* PermisionResource.swift in Sources */,
+				54CBAD5628409BDE00B05333 /* Replica.swift in Sources */,
 				542E8B00283AA73700D6D7D4 /* BigBanView.swift in Sources */,
 				54948228282E1D38009DAB25 /* AppSettings.swift in Sources */,
 				54948279282F8198009DAB25 /* HeartSlotView.swift in Sources */,

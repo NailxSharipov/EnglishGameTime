@@ -14,7 +14,7 @@ struct GameView: View {
     }
     
     @StateObject
-    var viewModel = ViewModel(lessonResource: .shared, permisionResource: .shared, progressResource: .shared, audioResource: .shared)
+    var viewModel = ViewModel(lessonResource: .shared, permisionResource: .shared, progressResource: .shared, audioResource: .shared, replicaSource: .shared)
     
     private let color: Color
     private let transaction: OpenGameTransaction
@@ -63,14 +63,13 @@ struct GameView: View {
                                 )
                             }
                         } else {
-                            Text("You lose!")
-                                .font(.system(
-                                    size: mainProxy.isIPad ? 40 : 20,
-                                    weight: .semibold,
-                                    design: .monospaced
-                                ))
-                                .foregroundColor(.white)
-                                .frame(alignment: .center)
+                            Spacer()
+                            HStack {
+                                Text(viewModel.loseReplica.text)
+                                    .font(.system(size: mainProxy.isIPad ? 24 : 12, weight: .regular)).foregroundColor(.white)
+                                Text(" - \(viewModel.loseReplica.author)")
+                                    .font(.system(size: mainProxy.isIPad ? 24 : 12, weight: .ultraLight)).foregroundColor(.white)
+                            }.padding(mainProxy.isIPad ? 40 : 20)
                         }
                         Spacer()
                         HStack {

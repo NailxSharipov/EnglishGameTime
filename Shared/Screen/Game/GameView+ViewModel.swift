@@ -13,6 +13,7 @@ extension GameView {
 
         private (set) var isGameEnd = false
 
+        private (set) var loseReplica: Replica = Replica(text: "", author: "")
         private (set) var word: String = ""
         private (set) var time: String = ""
         private (set) var lifeCount: Int = 3
@@ -29,12 +30,14 @@ extension GameView {
         private let permisionResource: PermisionResource
         private let progressResource: ProgressResource
         private let audioResource: AudioResource
+        private let replicaSource: ReplicaSource
 
-        init(lessonResource: LessonResource, permisionResource: PermisionResource, progressResource: ProgressResource, audioResource: AudioResource) {
+        init(lessonResource: LessonResource, permisionResource: PermisionResource, progressResource: ProgressResource, audioResource: AudioResource, replicaSource: ReplicaSource) {
             self.lessonResource = lessonResource
             self.permisionResource = permisionResource
             self.progressResource = progressResource
             self.audioResource = audioResource
+            self.replicaSource = replicaSource
         }
     }
     
@@ -201,6 +204,7 @@ extension GameView.ViewModel {
             self.word = ""
             self.cells = []
             self.time = ""
+            self.loseReplica = self.replicaSource.next()
             self.isGameEnd = true
             self.objectWillChange.send()
         }
