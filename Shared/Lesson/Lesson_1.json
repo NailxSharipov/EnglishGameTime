@@ -1,0 +1,88 @@
+{
+    "id": 1,
+    "name": "Food",
+    "words":
+    [
+        {
+            "name": "Apple",
+            "images": [
+                "Food/apple_0.heic",
+                "Food/apple.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Apricote",
+            "images": [
+                "Food/apricote.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Artichokes",
+            "images": [
+                "Food/artichokes.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Avocado",
+            "images": [
+                "Food/avocado_0.heic",
+                "Food/avocado_1.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Bacon",
+            "images": [
+                "Food/bacon.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Bagel",
+            "images": [
+                "Food/bagel.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Baguette",
+            "images": [
+                "Food/baguette.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Bagel",
+            "images": [
+                "Food/bagel.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Baguette",
+            "images": [
+                "Food/baguette.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Banana",
+            "images": [
+                "Food/banana_0.heic",
+                "Food/banana.heic"
+            ],
+            "audio": "Number/10.wav"
+        },
+        {
+            "name": "Beet",
+            "images": [
+                "Food/beet_0.heic",
+                "Food/beet_1.heic"
+            ],
+            "audio": "Number/10.wav"
+        }
+    ]
+}
