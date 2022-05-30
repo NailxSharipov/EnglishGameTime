@@ -16,6 +16,7 @@ struct Progress: Codable {
     }
 
     var lessons: [Lesson]
+    var winCounter: Int
     
 }
 

@@ -54,7 +54,7 @@ extension GameView.ViewModel {
         self.lessonId = lessonId
         
         let lesson = await lessonResource.read(lessonId: lessonId)
-        let nextPermision = await permisionResource.isPermited(lessonId: lessonId + 1)
+        let nextPermision = permisionResource.isPermited(lessonId: lessonId + 1)
         
         let game = Game(
             words: lesson.words,

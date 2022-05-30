@@ -5,6 +5,9 @@
 //  Created by Nail Sharipov on 12.05.2022.
 //
 
+#if os(iOS)
+import UIKit
+#endif
 import SwiftUI
 
 extension MainView {
@@ -12,8 +15,8 @@ extension MainView {
     final class ViewModel: ObservableObject {
 
         var isShareTipVisible: Bool = false
+        var isSubscriptionOpen: Bool = false
         var isShareOpen: Bool = false
-        var isStoreOpen: Bool = false
         var isMain: Bool {
             switch openGameState {
             case .closed:
@@ -23,6 +26,7 @@ extension MainView {
             }
         }
         
+        var name: String { "Big Ban English" }
         var isIntroduction: Bool { cells.count < 3 }
         
         private (set) var color: Color
@@ -62,6 +66,12 @@ extension MainView.ViewModel {
     func tap(id: Int) {
         guard let cell = cells.first(where: { $0.id == id }) else { return }
         
+        guard self.permisionResource.isPermited(lessonId: id) else {
+            isSubscriptionOpen = true
+            objectWillChange.send()
+            return
+        }
+
         let transaction = OpenGameTransaction(id: id) { [weak self] success in
             self?.close(id: id, success: success)
         }
@@ -84,25 +94,33 @@ extension MainView.ViewModel {
         }
 
         Task { [weak self] in
-            await self?.load()
-        }
-        
-        if success {
-            let isRated = rateResource.isRated
-            let isShare = shareResource.isAnyFriendInvited && !subscriptionResource.isSubscribed
+            guard let self = self else { return }
+            await self.load()
+            let winCounts = await self.progressResource.winCounts()
             
-            if !isRated && !isShare {
-                if Bool.random() {
-                    rateResource.rate()
-                } else {
-                    isShareTipVisible = true
-                    objectWillChange.send()
+            await MainActor.run { [weak self] in
+                guard let self = self else { return }
+                if success {
+                    let isRated = self.rateResource.isRated
+                    let isShared = self.shareResource.isAnyFriendInvited
+                    
+                    let askRate = !isRated && winCounts > 5
+                    let askShare = !isShared && !self.subscriptionResource.isSubscribed
+                    
+                    if askRate && askShare {
+                        if Bool.random() {
+                            self.rateResource.rate()
+                        } else {
+                            self.isShareTipVisible = true
+                            self.objectWillChange.send()
+                        }
+                    } else if askRate {
+                        rateResource.rate()
+                    } else if askShare {
+                        isShareTipVisible = true
+                        self.objectWillChange.send()
+                    }
                 }
-            } else if !isRated {
-                rateResource.rate()
-            } else if !isShare {
-                isShareTipVisible = true
-                objectWillChange.send()
             }
         }
     }
@@ -176,26 +194,20 @@ extension MainView.ViewModel {
     }
     
     func pressShare() {
-        guard let url = Self.storeLink, !isShareOpen else { return }
+        guard let url = rateResource.storeLink, !isShareOpen else { return }
         self.shareLink = url
         self.isShareOpen = true
         self.objectWillChange.send()
     }
     
     func pressStore() {
-//        guard let url = Self.storeLink, !isStoreOpen else { return }
-//        self.shareLink = url
-//        self.isStoreOpen = true
-//
-        isShareTipVisible = true
-        self.objectWillChange.send()
+#if os(iOS)
+        guard let url = rateResource.storeLink else { return }
+        UIApplication.shared.open(url)
+#endif
     }
     
     func pressCloseInviteFriend() {
-//        guard let url = Self.storeLink, !isStoreOpen else { return }
-//        self.shareLink = url
-//        self.isStoreOpen = true
-//
         isShareTipVisible = false
         self.objectWillChange.send()
     }
@@ -207,16 +219,7 @@ extension MainView.ViewModel {
             }
         }
     }
-    
-    private static var storeLink: URL? {
-        let locale = Locale.current
-        guard let country = locale.regionCode else { return nil }
-        let appName = ""
-        let appId = ""
-        let string = "https://apps.apple.com/\(country)/app/\(appName)/id\(appId)"
-        
-        return URL(string: string)
-    }
+
     
     func setColor(index: Int) {
         colorResource.set(index: index)

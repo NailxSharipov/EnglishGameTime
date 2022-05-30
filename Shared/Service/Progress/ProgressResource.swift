@@ -9,12 +9,20 @@ import Foundation
 
 actor ProgressResource {
     
+    private static let winSaveKey = "winSaveKey"
     static let shared = ProgressResource()
     private let fileManager = FileManager.default
-    private var progress = Progress(lessons: [])
+    private var progress = Progress(lessons: [], winCounter: 0)
     private var isLoaded = false
     
     private var file: URL? {
+        fileManager
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first?
+            .appendingPathComponent("progress.json", isDirectory: false)
+    }
+
+    private var winCounts: URL? {
         fileManager
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?
@@ -58,6 +66,10 @@ actor ProgressResource {
         } else {
             progress.lessons.append(lesson)
         }
+        
+        if lesson.lifeCount != nil {
+            progress.winCounter += 1
+        }
 
         self.progress = progress
         
@@ -92,5 +104,10 @@ actor ProgressResource {
         }
         
         return map
+    }
+    
+    func winCounts() async -> Int {
+        let progress = await self.load()
+        return progress.winCounter
     }
 }

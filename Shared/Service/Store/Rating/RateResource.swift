@@ -17,8 +17,17 @@ final class RateResource {
 
     static let shared = RateResource()
 
+    var storeLink: URL? {
+        let locale = Locale.current
+        guard let country = locale.regionCode else { return nil }
+        let appName = "BigBanEng"
+        let appId = "1626776043"
+        let string = "https://apps.apple.com/\(country)/app/\(appName)/id\(appId)"
+        
+        return URL(string: string)
+    }
+    
     private static let saveKey = "isRated"
-
     private let progressResource: ProgressResource = .shared
     private (set) var isRated: Bool {
         get {

@@ -83,7 +83,8 @@ struct LessonCell: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: .init(lineWidth: 4, lineCap: .round, lineJoin: .round, dash: [16, 16])).foregroundColor(color)
+                        .stroke(style: .init(lineWidth: 4, lineCap: .round, lineJoin: .round, dash: [16, 16]))
+                        .foregroundColor(color).background(.white)
                 }.opacity(0.5)
             }
         }

@@ -30,7 +30,7 @@ struct MainView: View {
                 ScrollView(.vertical) {
                     self.logo(size: proxy.size)
                         .padding(.top, 20)
-                    Text("Big Ban English")
+                    Text(viewModel.name)
                         .font(.system(size: 52, weight: .semibold, design: .monospaced))
                         .foregroundColor(viewModel.color)
                         .padding(.top, 24)
@@ -93,15 +93,19 @@ struct MainView: View {
                 }).padding(12)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
-        .background(.white)
-        .environmentObject(viewModel)
+        .preferredColorScheme(.light)
 #if os(iOS)
         .sheet(isPresented: $viewModel.isShareOpen, content: {
             ShareActivityView(shareLink: viewModel.shareLink) {
                 viewModel.onSuccessShare()
             }
-        }).preferredColorScheme(.light)
+        })
+        .sheet(isPresented: $viewModel.isSubscriptionOpen, content: {
+            SubscriptionView()
+        })
 #endif
+        .background(.white)
+        .environmentObject(viewModel)
     }
 
     private func grid(size: CGSize) -> some View {

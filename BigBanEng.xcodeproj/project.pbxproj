@@ -15,6 +15,10 @@
 		54053F3C283E1B0500F2C60F /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54053F3A283E1B0500F2C60F /* Permission.swift */; };
 		54053F44283E93C500F2C60F /* FireWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54053F43283E93C500F2C60F /* FireWorkView.swift */; };
 		54053F45283E93C500F2C60F /* FireWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54053F43283E93C500F2C60F /* FireWorkView.swift */; };
+		5425EEAA28448F2700C312CA /* SubscriptionView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425EEA928448F2700C312CA /* SubscriptionView+ViewModel.swift */; };
+		5425EEAB28448F2700C312CA /* SubscriptionView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425EEA928448F2700C312CA /* SubscriptionView+ViewModel.swift */; };
+		5425EEAD28448FB400C312CA /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425EEAC28448FB400C312CA /* SubscriptionCell.swift */; };
+		5425EEAE28448FB400C312CA /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425EEAC28448FB400C312CA /* SubscriptionCell.swift */; };
 		542E8AF9283A986400D6D7D4 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542E8AF8283A986400D6D7D4 /* LogoView.swift */; };
 		542E8AFA283A986400D6D7D4 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542E8AF8283A986400D6D7D4 /* LogoView.swift */; };
 		542E8AFC283A987200D6D7D4 /* WheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542E8AFB283A987200D6D7D4 /* WheelView.swift */; };
@@ -92,6 +96,8 @@
 		54CBAD53284096C300B05333 /* ReplicaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD51284096C300B05333 /* ReplicaSource.swift */; };
 		54CBAD5528409BDE00B05333 /* Replica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD5428409BDE00B05333 /* Replica.swift */; };
 		54CBAD5628409BDE00B05333 /* Replica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD5428409BDE00B05333 /* Replica.swift */; };
+		54CBAD592840C0C000B05333 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD582840C0C000B05333 /* SubscriptionView.swift */; };
+		54CBAD5A2840C0C000B05333 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBAD582840C0C000B05333 /* SubscriptionView.swift */; };
 		54DADB212830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
 		54DADB222830CABC005BDE65 /* PressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB202830CABC005BDE65 /* PressAction.swift */; };
 		54DADB252830DB34005BDE65 /* WordCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */; };
@@ -134,6 +140,8 @@
 		5402968F283CB8CA000B463A /* ColorResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorResource.swift; sourceTree = "<group>"; };
 		54053F3A283E1B0500F2C60F /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		54053F43283E93C500F2C60F /* FireWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireWorkView.swift; sourceTree = "<group>"; };
+		5425EEA928448F2700C312CA /* SubscriptionView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubscriptionView+ViewModel.swift"; sourceTree = "<group>"; };
+		5425EEAC28448FB400C312CA /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		542E8AF8283A986400D6D7D4 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		542E8AFB283A987200D6D7D4 /* WheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelView.swift; sourceTree = "<group>"; };
 		542E8AFE283AA73700D6D7D4 /* BigBanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigBanView.swift; sourceTree = "<group>"; };
@@ -173,13 +181,14 @@
 		54CBAD4D2840969D00B05333 /* replicas.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = replicas.json; sourceTree = "<group>"; };
 		54CBAD51284096C300B05333 /* ReplicaSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplicaSource.swift; sourceTree = "<group>"; };
 		54CBAD5428409BDE00B05333 /* Replica.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Replica.swift; sourceTree = "<group>"; };
+		54CBAD582840C0C000B05333 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		54DADB202830CABC005BDE65 /* PressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAction.swift; sourceTree = "<group>"; };
 		54DADB242830DB34005BDE65 /* WordCell+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordCell+ViewModel.swift"; sourceTree = "<group>"; };
 		54E349AA282D08BF0059AFD0 /* EnglishGameTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishGameTimeApp.swift; sourceTree = "<group>"; };
 		54E349AB282D08BF0059AFD0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		54E349AC282D08C10059AFD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		54E349B1282D08C10059AFD0 /* EnglishGameTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnglishGameTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		54E349B7282D08C10059AFD0 /* EnglishGameTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnglishGameTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54E349B1282D08C10059AFD0 /* BigBanEng.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigBanEng.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54E349B7282D08C10059AFD0 /* BigBanEng.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigBanEng.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54E349B9282D08C10059AFD0 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		54E349C9282D08F90059AFD0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		54E349CB282D0A9E0059AFD0 /* MainView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainView+ViewModel.swift"; sourceTree = "<group>"; };
@@ -362,6 +371,16 @@
 			path = Replica;
 			sourceTree = "<group>";
 		};
+		54CBAD572840C08000B05333 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				54CBAD582840C0C000B05333 /* SubscriptionView.swift */,
+				5425EEA928448F2700C312CA /* SubscriptionView+ViewModel.swift */,
+				5425EEAC28448FB400C312CA /* SubscriptionCell.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
 		54DADB1F2830CAAA005BDE65 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,8 +429,8 @@
 		54E349B2282D08C10059AFD0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				54E349B1282D08C10059AFD0 /* EnglishGameTime.app */,
-				54E349B7282D08C10059AFD0 /* EnglishGameTime.app */,
+				54E349B1282D08C10059AFD0 /* BigBanEng.app */,
+				54E349B7282D08C10059AFD0 /* BigBanEng.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -439,6 +458,7 @@
 		54E349CE282D0AD00059AFD0 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				54CBAD572840C08000B05333 /* Subscription */,
 				542E8AF7283A983500D6D7D4 /* Logo */,
 				54590B362836509900214713 /* Share */,
 				54E349C9282D08F90059AFD0 /* MainView.swift */,
@@ -503,9 +523,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		54E349B0282D08C10059AFD0 /* EnglishGameTime (iOS) */ = {
+		54E349B0282D08C10059AFD0 /* BigBanEng (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 54E349C2282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "EnglishGameTime (iOS)" */;
+			buildConfigurationList = 54E349C2282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "BigBanEng (iOS)" */;
 			buildPhases = (
 				54E349AD282D08C10059AFD0 /* Sources */,
 				54E349AE282D08C10059AFD0 /* Frameworks */,
@@ -515,14 +535,14 @@
 			);
 			dependencies = (
 			);
-			name = "EnglishGameTime (iOS)";
+			name = "BigBanEng (iOS)";
 			productName = "EnglishGameTime (iOS)";
-			productReference = 54E349B1282D08C10059AFD0 /* EnglishGameTime.app */;
+			productReference = 54E349B1282D08C10059AFD0 /* BigBanEng.app */;
 			productType = "com.apple.product-type.application";
 		};
-		54E349B6282D08C10059AFD0 /* EnglishGameTime (macOS) */ = {
+		54E349B6282D08C10059AFD0 /* BigBanEng (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 54E349C5282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "EnglishGameTime (macOS)" */;
+			buildConfigurationList = 54E349C5282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "BigBanEng (macOS)" */;
 			buildPhases = (
 				54E349B3282D08C10059AFD0 /* Sources */,
 				54E349B4282D08C10059AFD0 /* Frameworks */,
@@ -532,9 +552,9 @@
 			);
 			dependencies = (
 			);
-			name = "EnglishGameTime (macOS)";
+			name = "BigBanEng (macOS)";
 			productName = "EnglishGameTime (macOS)";
-			productReference = 54E349B7282D08C10059AFD0 /* EnglishGameTime.app */;
+			productReference = 54E349B7282D08C10059AFD0 /* BigBanEng.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -555,7 +575,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 54E349A8282D08BF0059AFD0 /* Build configuration list for PBXProject "EnglishGameTime" */;
+			buildConfigurationList = 54E349A8282D08BF0059AFD0 /* Build configuration list for PBXProject "BigBanEng" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -568,8 +588,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				54E349B0282D08C10059AFD0 /* EnglishGameTime (iOS) */,
-				54E349B6282D08C10059AFD0 /* EnglishGameTime (macOS) */,
+				54E349B0282D08C10059AFD0 /* BigBanEng (iOS) */,
+				54E349B6282D08C10059AFD0 /* BigBanEng (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -639,6 +659,7 @@
 				54948244282E6681009DAB25 /* RandomGenerator.swift in Sources */,
 				542E8B0E283AB3BA00D6D7D4 /* SkyScraperView.swift in Sources */,
 				54E349CC282D0A9E0059AFD0 /* MainView+ViewModel.swift in Sources */,
+				54CBAD592840C0C000B05333 /* SubscriptionView.swift in Sources */,
 				5494827B282FA576009DAB25 /* CenteredGridLayout.swift in Sources */,
 				54053F3B283E1B0500F2C60F /* Permission.swift in Sources */,
 				54E349E9282D1DB90059AFD0 /* GameView+ViewModel.swift in Sources */,
@@ -650,10 +671,12 @@
 				54B9E79228326D35001F3D6B /* AudioResource.swift in Sources */,
 				54E349D1282D0B0F0059AFD0 /* GameView.swift in Sources */,
 				54F8A02A283BC3B40037E931 /* ProgressBarView.swift in Sources */,
+				5425EEAA28448F2700C312CA /* SubscriptionView+ViewModel.swift in Sources */,
 				54F8A01F283B612E0037E931 /* CGPoint.swift in Sources */,
 				5494821F282E1635009DAB25 /* Image+File.swift in Sources */,
 				54590B3428361DAA00214713 /* InAppPurchaseManager.swift in Sources */,
 				54B638CF2835017100C8C87A /* MoreView+ViewModel.swift in Sources */,
+				5425EEAD28448FB400C312CA /* SubscriptionCell.swift in Sources */,
 				5494823D282E5BA2009DAB25 /* WordCell.swift in Sources */,
 				5402968C283CB792000B463A /* ColorGrid.swift in Sources */,
 				54B638CC2835012100C8C87A /* MoreView.swift in Sources */,
@@ -701,6 +724,7 @@
 				54948245282E6681009DAB25 /* RandomGenerator.swift in Sources */,
 				542E8B0F283AB3BA00D6D7D4 /* SkyScraperView.swift in Sources */,
 				54E349ED282D25C90059AFD0 /* LessonCell.swift in Sources */,
+				54CBAD5A2840C0C000B05333 /* SubscriptionView.swift in Sources */,
 				5494827C282FA576009DAB25 /* CenteredGridLayout.swift in Sources */,
 				54053F3C283E1B0500F2C60F /* Permission.swift in Sources */,
 				54E349D8282D0D190059AFD0 /* Lesson.swift in Sources */,
@@ -712,10 +736,12 @@
 				54B9E79328326D35001F3D6B /* AudioResource.swift in Sources */,
 				54E349EA282D1DB90059AFD0 /* GameView+ViewModel.swift in Sources */,
 				54F8A02B283BC3B40037E931 /* ProgressBarView.swift in Sources */,
+				5425EEAB28448F2700C312CA /* SubscriptionView+ViewModel.swift in Sources */,
 				54F8A020283B612E0037E931 /* CGPoint.swift in Sources */,
 				54948224282E1C1A009DAB25 /* AppDelegate_macOS.swift in Sources */,
 				54590B3528361DAA00214713 /* InAppPurchaseManager.swift in Sources */,
 				54B638D02835017100C8C87A /* MoreView+ViewModel.swift in Sources */,
+				5425EEAE28448FB400C312CA /* SubscriptionCell.swift in Sources */,
 				5494823F282E61DB009DAB25 /* Image+File.swift in Sources */,
 				5402968D283CB792000B463A /* ColorGrid.swift in Sources */,
 				54B638CD2835012100C8C87A /* MoreView.swift in Sources */,
@@ -843,7 +869,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HPV9E52JPX;
 				ENABLE_PREVIEWS = YES;
@@ -859,8 +886,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.EnglishGameTime;
-				PRODUCT_NAME = EnglishGameTime;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.BigBan;
+				PRODUCT_NAME = BigBanEng;
+				PROVISIONING_PROFILE_SPECIFIER = BigBanEnglish;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -873,7 +901,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HPV9E52JPX;
 				ENABLE_PREVIEWS = YES;
@@ -889,8 +918,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.EnglishGameTime;
-				PRODUCT_NAME = EnglishGameTime;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.BigBan;
+				PRODUCT_NAME = BigBanEng;
+				PROVISIONING_PROFILE_SPECIFIER = BigBanEnglish_Dist;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -920,7 +950,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.EnglishGameTime;
-				PRODUCT_NAME = EnglishGameTime;
+				PRODUCT_NAME = BigBanEng;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -948,7 +978,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.weakteam.EnglishGameTime;
-				PRODUCT_NAME = EnglishGameTime;
+				PRODUCT_NAME = BigBanEng;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -958,7 +988,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		54E349A8282D08BF0059AFD0 /* Build configuration list for PBXProject "EnglishGameTime" */ = {
+		54E349A8282D08BF0059AFD0 /* Build configuration list for PBXProject "BigBanEng" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				54E349C0282D08C10059AFD0 /* Debug */,
@@ -967,7 +997,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		54E349C2282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "EnglishGameTime (iOS)" */ = {
+		54E349C2282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "BigBanEng (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				54E349C3282D08C10059AFD0 /* Debug */,
@@ -976,7 +1006,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		54E349C5282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "EnglishGameTime (macOS)" */ = {
+		54E349C5282D08C10059AFD0 /* Build configuration list for PBXNativeTarget "BigBanEng (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				54E349C6282D08C10059AFD0 /* Debug */,

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "54E349B0282D08C10059AFD0"
-               BuildableName = "EnglishGameTime.app"
-               BlueprintName = "EnglishGameTime (iOS)"
-               ReferencedContainer = "container:EnglishGameTime.xcodeproj">
+               BuildableName = "BigBanEng.app"
+               BlueprintName = "BigBanEng (iOS)"
+               ReferencedContainer = "container:BigBanEng.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "54E349B0282D08C10059AFD0"
-            BuildableName = "EnglishGameTime.app"
-            BlueprintName = "EnglishGameTime (iOS)"
-            ReferencedContainer = "container:EnglishGameTime.xcodeproj">
+            BuildableName = "BigBanEng.app"
+            BlueprintName = "BigBanEng (iOS)"
+            ReferencedContainer = "container:BigBanEng.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "54E349B0282D08C10059AFD0"
-            BuildableName = "EnglishGameTime.app"
-            BlueprintName = "EnglishGameTime (iOS)"
-            ReferencedContainer = "container:EnglishGameTime.xcodeproj">
+            BuildableName = "BigBanEng.app"
+            BlueprintName = "BigBanEng (iOS)"
+            ReferencedContainer = "container:BigBanEng.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

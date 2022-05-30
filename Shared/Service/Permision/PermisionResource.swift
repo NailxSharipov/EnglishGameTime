@@ -35,16 +35,16 @@ final class PermisionResource {
         return .limit(set)
     }
 
-    func isPermited(lessonId: Int) async -> Bool {
-        switch await self.permissions() {
-        case .all:
+    func isPermited(lessonId: Int) -> Bool {
+        guard !subscriptionResource.isSubscribed else {
             return true
-        case .introduce:
-            return lessonId < Self.freeLevelsCount
-        case .limit(let idSet):
-            return idSet.contains(lessonId)
         }
         
+        if shareResource.isAnyFriendInvited {
+            return lessonId <= 3
+        } else {
+            return lessonId <= 1
+        }
     }
     
 }
