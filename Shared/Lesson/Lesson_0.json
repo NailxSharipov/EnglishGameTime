@@ -6,227 +6,227 @@
         {
             "name": "0",
             "images": [
-                "0.png",
-                "0a.png",
-                "0b.png"
+                "Number/0.png",
+                "Number/0a.png",
+                "Number/0b.png"
             ],
-            "audio": "10.wav"
+            "audio": "Number/10.wav"
         },
         {
             "name": "1",
             "images": [
-                "1.png",
-                "1a.png",
-                "1b.png",
-                "1c.png",
-                "1d.png"
+                "Number/1.png",
+                "Number/1a.png",
+                "Number/1b.png",
+                "Number/1c.png",
+                "Number/1d.png"
             ],
-            "audio": "1.wav"
+            "audio": "Number/1.wav"
         },
         {
             "name": "2",
             "images": [
-                "2.png"
+                "Number/2.png"
             ],
-            "audio": "2.wav"
+            "audio": "Number/2.wav"
         },
         {
             "name": "3",
             "images": [
-                "3.png"
+                "Number/3.png"
             ],
-            "audio": "3.wav"
+            "audio": "Number/3.wav"
         },
         {
             "name": "4",
             "images": [
-                "4.png"
+                "Number/4.png"
             ],
-            "audio": "4.wav"
+            "audio": "Number/4.wav"
         },
         {
             "name": "5",
             "images": [
-                "5.png"
+                "Number/5.png"
             ],
-            "audio": "5.wav"
+            "audio": "Number/5.wav"
         },
         {
             "name": "6",
             "images": [
-                "6.png"
+                "Number/6.png"
             ],
-            "audio": "6.wav"
+            "audio": "Number/6.wav"
         },
         {
             "name": "7",
             "images": [
-                "7.png"
+                "Number/7.png"
             ],
-            "audio": "7.wav"
+            "audio": "Number/7.wav"
         },
         {
             "name": "8",
             "images": [
-                "8.png"
+                "Number/8.png"
             ],
-            "audio": "8.wav"
+            "audio": "Number/8.wav"
         },
         {
             "name": "9",
             "images": [
-                "9.png"
+                "Number/9.png"
             ],
-            "audio": "9.wav"
+            "audio": "Number/9.wav"
         },
         {
             "name": "10",
             "images": [
-                "10.png"
+                "Number/10.png"
             ],
-            "audio": "10.wav"
+            "audio": "Number/10.wav"
         },
         {
             "name": "11",
             "images": [
-                "11.png"
+                "Number/11.png"
             ],
-            "audio": "1.wav"
+            "audio": "Number/1.wav"
         },
         {
             "name": "12",
             "images": [
-                "12.png"
+                "Number/12.png"
             ],
-            "audio": "2.wav"
+            "audio": "Number/2.wav"
         },
         {
             "name": "13",
             "images": [
-                "13.png"
+                "Number/13.png"
             ],
-            "audio": "3.wav"
+            "audio": "Number/3.wav"
         },
         {
             "name": "14",
             "images": [
-                "14.png",
-                "14a.png",
-                "14b.png"
+                "Number/14.png",
+                "Number/14a.png",
+                "Number/14b.png"
             ],
-            "audio": "4.wav"
+            "audio": "Number/4.wav"
         },
         {
             "name": "15",
             "images": [
-                "15.png"
+                "Number/15.png"
             ],
-            "audio": "5.wav"
+            "audio": "Number/5.wav"
         },
         {
             "name": "16",
             "images": [
-                "16.png"
+                "Number/16.png"
             ],
-            "audio": "6.wav"
+            "audio": "Number/6.wav"
         },
         {
             "name": "17",
             "images": [
-                "17.png"
+                "Number/17.png"
             ],
-            "audio": "7.wav"
+            "audio": "Number/7.wav"
         },
         {
             "name": "18",
             "images": [
-                "18.png"
+                "Number/18.png"
             ],
-            "audio": "8.wav"
+            "audio": "Number/8.wav"
         },
         {
             "name": "19",
             "images": [
-                "19.png"
+                "Number/19.png"
             ],
-            "audio": "9.wav"
+            "audio": "Number/9.wav"
         },
         {
             "name": "20",
             "images": [
-                "20.png"
+                "Number/20.png"
             ],
-            "audio": "10.wav"
+            "audio": "Number/10.wav"
         },
         {
             "name": "21",
             "images": [
-                "21.png"
+                "Number/21.png"
             ],
-            "audio": "1.wav"
+            "audio": "Number/1.wav"
         },
         {
             "name": "22",
             "images": [
-                "22.png"
+                "Number/22.png"
             ],
-            "audio": "2.wav"
+            "audio": "Number/2.wav"
         },
         {
             "name": "23",
             "images": [
-                "23.png"
+                "Number/23.png"
             ],
-            "audio": "3.wav"
+            "audio": "Number/3.wav"
         },
         {
             "name": "24",
             "images": [
-                "24.png"
+                "Number/24.png"
             ],
-            "audio": "4.wav"
+            "audio": "Number/4.wav"
         },
         {
             "name": "25",
             "images": [
-                "25.png"
+                "Number/25.png"
             ],
-            "audio": "5.wav"
+            "audio": "Number/5.wav"
         },
         {
             "name": "26",
             "images": [
-                "26.png"
+                "Number/26.png"
             ],
-            "audio": "6.wav"
+            "audio": "Number/6.wav"
         },
         {
             "name": "27",
             "images": [
-                "27.png"
+                "Number/27.png"
             ],
-            "audio": "7.wav"
+            "audio": "Number/7.wav"
         },
         {
             "name": "28",
             "images": [
-                "28.png"
+                "Number/28.png"
             ],
-            "audio": "8.wav"
+            "audio": "Number/8.wav"
         },
         {
             "name": "29",
             "images": [
-                "29.png"
+                "Number/29.png"
             ],
-            "audio": "9.wav"
+            "audio": "Number/9.wav"
         },
         {
             "name": "30",
             "images": [
-                "30.png"
+                "Number/30.png"
             ],
-            "audio": "10.wav"
+            "audio": "Number/10.wav"
         }
     ]
 }
