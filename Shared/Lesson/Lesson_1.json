@@ -83,6 +83,14 @@
                 "Food/beet_1.heic"
             ],
             "audio": "Number/10.wav"
+        },
+        {
+            "name": "Beet 2",
+            "images": [
+                "Food/beet_0.heic",
+                "Food/beet_1.heic"
+            ],
+            "audio": "Number/2.wav"
         }
     ]
 }

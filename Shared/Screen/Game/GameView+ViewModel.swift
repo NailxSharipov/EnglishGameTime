@@ -62,10 +62,9 @@ extension GameView.ViewModel {
         
         let game = Game(
             words: lesson.words,
-//            countToWin: 3,
             countToWin: lesson.words.count.winCount,
             countToLose: 3,
-            timeForWord: 3,
+            timeForWord: 5,
             beforeTimeEnding: 8.5,
             countMaxLevel: .x12,
             onUpdateTime: { [weak self] time in
