@@ -70,22 +70,21 @@ struct LessonCell: View {
                     Text(viewModel.lesson.title)
                         .font(.system(size: 16, weight: .semibold, design: .monospaced))
                         .foregroundColor(.white)
-                        .opacity(0.6)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                 }
             case .pay:
                 ZStack(alignment: .center) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(style: .init(lineWidth: 4, lineCap: .round, lineJoin: .round, dash: [0, 8]))
+                        .foregroundColor(color).background(.white)
                     Text(viewModel.lesson.title)
                         .font(.system(size: 16, weight: .semibold, design: .monospaced))
                         .foregroundColor(color)
                         .padding(4)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: .init(lineWidth: 4, lineCap: .round, lineJoin: .round, dash: [16, 16]))
-                        .foregroundColor(color).background(.white)
-                }.opacity(0.5)
+                }//.opacity(0.5)
             }
         }
     }

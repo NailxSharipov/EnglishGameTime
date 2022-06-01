@@ -14,7 +14,7 @@ struct GameView: View {
     }
     
     @StateObject
-    var viewModel = ViewModel(lessonResource: .shared, permisionResource: .shared, progressResource: .shared, audioResource: .shared, replicaSource: .shared)
+    var viewModel = ViewModel(lessonResource: .shared, permisionResource: .shared, progressResource: .shared, audioResource: .shared, replicaSource: .shared, trackingSystem: GoogleAnalytics.shared)
     
     private let color: Color
     private let transaction: OpenGameTransaction

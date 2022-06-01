@@ -1,0 +1,85 @@
+{
+  "identifier" : "FD7F542D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "C13E4918",
+      "localizations" : [
+
+      ],
+      "name" : "BigBanEducation",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "0.99",
+          "familyShareable" : true,
+          "groupNumber" : 2,
+          "internalID" : "B5D38495",
+          "introductoryOffer" : {
+            "internalID" : "E419699C",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Big Ban English+ for 1 month ",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "BigBanPerMonthId",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "BigBanMonthly",
+          "subscriptionGroupID" : "C13E4918",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "955321FD",
+          "introductoryOffer" : {
+            "internalID" : "8A4AC9F1",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Big Ban English+ for 12 months",
+              "displayName" : "Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "BigBanPerYearId",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "BigBanEarly",
+          "subscriptionGroupID" : "C13E4918",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 2
+  }
+}

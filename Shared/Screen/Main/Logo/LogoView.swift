@@ -64,8 +64,8 @@ struct LogoView: View {
                 .frame(height: 0.9 * h)
                 .offset(x: 0.42 * sw + dx)
             Path { path in
-                path.move(to: .init(x: 0.05 * w, y: h + 3))
-                path.addLine(to: .init(x: 0.95 * w, y: h + 3))
+                path.move(to: .init(x: 0.05 * w, y: h + 2))
+                path.addLine(to: .init(x: 0.95 * w, y: h + 2))
             }
             .stroke(style: .init(lineWidth: 6, lineCap: .round))
             .foregroundColor(color)

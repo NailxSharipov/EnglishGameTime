@@ -29,6 +29,7 @@ struct ShareActivityView: UIViewControllerRepresentable {
             .saveToCameraRoll,
             .print
         ]
+        
         controller.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
             if activityError == nil && completed {
                 DispatchQueue.main.async {

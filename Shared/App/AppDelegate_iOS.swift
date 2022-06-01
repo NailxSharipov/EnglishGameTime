@@ -7,11 +7,15 @@
 
 import UIKit
 import SwiftUI
+import FirebaseCore
 
 final class AppDelegate_iOS: NSObject, UIApplicationDelegate, ObservableObject {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         debugPrint("didFinishLaunch")
+        
+        FirebaseApp.configure()
+        
         return true
     }
 }

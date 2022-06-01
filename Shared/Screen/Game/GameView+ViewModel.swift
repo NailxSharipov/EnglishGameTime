@@ -19,6 +19,7 @@ extension GameView {
         private (set) var lifeCount: Int = 3
         private (set) var progress: Game.Progress = .init(value: 0, step: 0)
         private (set) var lessonId: Int = 0
+        private (set) var lesson: Lesson?
         private (set) var nextPermision: Bool = false
         private (set) var statistic: Game.Statistic = .init(failWords: [], time: 0, success: 0, isWin: false, isTimeEnd: false)
         private (set) var cells: [WordCell.ViewModel] = []
@@ -31,13 +32,15 @@ extension GameView {
         private let progressResource: ProgressResource
         private let audioResource: AudioResource
         private let replicaSource: ReplicaSource
-
-        init(lessonResource: LessonResource, permisionResource: PermisionResource, progressResource: ProgressResource, audioResource: AudioResource, replicaSource: ReplicaSource) {
+        private let trackingSystem: TrackingSystem
+        
+        init(lessonResource: LessonResource, permisionResource: PermisionResource, progressResource: ProgressResource, audioResource: AudioResource, replicaSource: ReplicaSource, trackingSystem: TrackingSystem) {
             self.lessonResource = lessonResource
             self.permisionResource = permisionResource
             self.progressResource = progressResource
             self.audioResource = audioResource
             self.replicaSource = replicaSource
+            self.trackingSystem = trackingSystem
         }
     }
     
@@ -54,7 +57,8 @@ extension GameView.ViewModel {
         self.lessonId = lessonId
         
         let lesson = await lessonResource.read(lessonId: lessonId)
-        let nextPermision = permisionResource.isPermited(lessonId: lessonId + 1)
+        self.lesson = lesson
+        let nextPermision = await permisionResource.isPermited(lessonId: lessonId + 1)
         
         let game = Game(
             words: lesson.words,
@@ -98,6 +102,8 @@ extension GameView.ViewModel {
             newGame.start()
             self.nextWord()
         }
+        
+        self.trackingSystem.start(lesson: lesson)
     }
 
     private func nextWord() {
@@ -180,10 +186,15 @@ extension GameView.ViewModel {
             if statistic.isWin {
                 self.audioResource.stop(sound: .timeIsRunnigOut)
                 self.audioResource.play(sound: .win)
-            } else if !statistic.isTimeEnd {
-                self.audioResource.play(sound: .fail)
+                self.trackingSystem.win(lesson: self.lesson)
+            } else {
+                if statistic.isTimeEnd {
+                    self.trackingSystem.timeEnd(lesson: self.lesson)
+                } else {
+                    self.audioResource.play(sound: .fail)
+                    self.trackingSystem.lifeEnd(lesson: self.lesson)
+                }
             }
-
             self.statistic = statistic
             
             Task {

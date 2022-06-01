@@ -17,7 +17,7 @@ final class PermisionResource {
     private let progressResource: ProgressResource = .shared
 
     func permissions() async -> Permission {
-        guard !subscriptionResource.isSubscribed else {
+        guard await !subscriptionResource.isSubscribed() else {
             return .all
         }
         
@@ -35,8 +35,8 @@ final class PermisionResource {
         return .limit(set)
     }
 
-    func isPermited(lessonId: Int) -> Bool {
-        guard !subscriptionResource.isSubscribed else {
+    func isPermited(lessonId: Int) async -> Bool {
+        guard await !subscriptionResource.isSubscribed() else {
             return true
         }
         

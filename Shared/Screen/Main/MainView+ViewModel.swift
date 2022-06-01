@@ -17,6 +17,7 @@ extension MainView {
         var isShareTipVisible: Bool = false
         var isSubscriptionOpen: Bool = false
         var isShareOpen: Bool = false
+        var isSettingsOpen: Bool = false
         var isMain: Bool {
             switch openGameState {
             case .closed:
@@ -29,6 +30,7 @@ extension MainView {
         var name: String { "Big Ban English" }
         var isIntroduction: Bool { cells.count < 3 }
         
+        private (set) var isProgress: Bool = true
         private (set) var color: Color
         private (set) var colorIndex: Int
         var colors: [Color] { colorResource.colors }
@@ -42,10 +44,11 @@ extension MainView {
         private let shareResource: ShareResource
         private let colorResource: ColorResource
         private let subscriptionResource: SubscriptionResource
+        private let trackingSystem: TrackingSystem
         private (set) var openGameState: OpenGameState = .closed
         private (set) var cells: [LessonCell.ViewModel] = []
         
-        init(resource: LessonResource, audioResource: AudioResource, progressResource: ProgressResource, permisionResource: PermisionResource, rateResource: RateResource, shareResource: ShareResource, colorResource: ColorResource, subscriptionResource: SubscriptionResource) {
+        init(resource: LessonResource, audioResource: AudioResource, progressResource: ProgressResource, permisionResource: PermisionResource, rateResource: RateResource, shareResource: ShareResource, colorResource: ColorResource, subscriptionResource: SubscriptionResource, trackingSystem: TrackingSystem) {
             self.lessonResource = resource
             self.audioResource = audioResource
             self.progressResource = progressResource
@@ -54,6 +57,7 @@ extension MainView {
             self.shareResource = shareResource
             self.colorResource = colorResource
             self.subscriptionResource = subscriptionResource
+            self.trackingSystem = trackingSystem
             color = colorResource.color
             colorIndex = colorResource.colorIndex
         }
@@ -62,26 +66,33 @@ extension MainView {
 }
 
 extension MainView.ViewModel {
-
+    
     func tap(id: Int) {
         guard let cell = cells.first(where: { $0.id == id }) else { return }
         
-        guard self.permisionResource.isPermited(lessonId: id) else {
-            isSubscriptionOpen = true
-            objectWillChange.send()
-            return
-        }
+        Task { [weak self] in
+            guard let self = self else { return }
+            let isPermited = await self.permisionResource.isPermited(lessonId: id)
+            await MainActor.run { [weak self] in
+                guard let self = self else { return }
+                guard isPermited else {
+                    self.isSubscriptionOpen = true
+                    objectWillChange.send()
+                    return
+                }
 
-        let transaction = OpenGameTransaction(id: id) { [weak self] success in
-            self?.close(id: id, success: success)
-        }
-        
-        self.audioResource.play(sound: .start)
-        
-        withAnimation() { [weak self, weak cell] in
-            cell?.isOpen = false
-            self?.openGameState = .opend(transaction)
-            self?.objectWillChange.send()
+                let transaction = OpenGameTransaction(id: id) { [weak self] success in
+                    self?.close(id: id, success: success)
+                }
+                
+                self.audioResource.play(sound: .start)
+                
+                withAnimation() { [weak self, weak cell] in
+                    cell?.isOpen = false
+                    self?.openGameState = .opend(transaction)
+                    self?.objectWillChange.send()
+                }
+            }
         }
     }
     
@@ -97,6 +108,7 @@ extension MainView.ViewModel {
             guard let self = self else { return }
             await self.load()
             let winCounts = await self.progressResource.winCounts()
+            let isSubscribed = await self.subscriptionResource.isSubscribed()
             
             await MainActor.run { [weak self] in
                 guard let self = self else { return }
@@ -105,7 +117,7 @@ extension MainView.ViewModel {
                     let isShared = self.shareResource.isAnyFriendInvited
                     
                     let askRate = !isRated && winCounts > 5
-                    let askShare = !isShared && !self.subscriptionResource.isSubscribed
+                    let askShare = !isShared && !isSubscribed && winCounts > 2
                     
                     if askRate && askShare {
                         if Bool.random() {
@@ -123,6 +135,15 @@ extension MainView.ViewModel {
                 }
             }
         }
+    }
+    
+    func onAppear() async {
+        await subscriptionResource.subscribe(self) { isSubscribed in
+            Task { [weak self] in
+                await self?.reloadCells()
+            }
+        }
+        await self.load()
     }
     
     func load() async {
@@ -190,6 +211,7 @@ extension MainView.ViewModel {
     @MainActor
     private func set(cells: [LessonCell.ViewModel]) async {
         self.cells = cells
+        self.isProgress = false
         self.objectWillChange.send()
     }
     
@@ -198,12 +220,20 @@ extension MainView.ViewModel {
         self.shareLink = url
         self.isShareOpen = true
         self.objectWillChange.send()
+        self.trackingSystem.track(event: .share_open)
+    }
+    
+    func pressSettings() {
+        guard !isSettingsOpen else { return }
+        self.isSettingsOpen = true
+        self.objectWillChange.send()
     }
     
     func pressStore() {
 #if os(iOS)
         guard let url = rateResource.storeLink else { return }
         UIApplication.shared.open(url)
+        self.trackingSystem.track(event: .store_open)
 #endif
     }
     
@@ -218,6 +248,8 @@ extension MainView.ViewModel {
                 await self?.reloadCells()
             }
         }
+        
+        self.trackingSystem.track(event: .share_success)
     }
 
     

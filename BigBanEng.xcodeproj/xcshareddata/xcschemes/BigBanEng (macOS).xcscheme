@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54E349B0282D08C10059AFD0"
+               BlueprintIdentifier = "54E349B6282D08C10059AFD0"
                BuildableName = "BigBanEng.app"
-               BlueprintName = "BigBanEng (iOS)"
+               BlueprintName = "BigBanEng (macOS)"
                ReferencedContainer = "container:BigBanEng.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "54E349B0282D08C10059AFD0"
+            BlueprintIdentifier = "54E349B6282D08C10059AFD0"
             BuildableName = "BigBanEng.app"
-            BlueprintName = "BigBanEng (iOS)"
+            BlueprintName = "BigBanEng (macOS)"
             ReferencedContainer = "container:BigBanEng.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -64,9 +64,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "54E349B0282D08C10059AFD0"
+            BlueprintIdentifier = "54E349B6282D08C10059AFD0"
             BuildableName = "BigBanEng.app"
-            BlueprintName = "BigBanEng (iOS)"
+            BlueprintName = "BigBanEng (macOS)"
             ReferencedContainer = "container:BigBanEng.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

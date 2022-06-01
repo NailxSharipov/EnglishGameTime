@@ -18,7 +18,8 @@ struct MainView: View {
         rateResource: .shared,
         shareResource: .shared,
         colorResource: .shared,
-        subscriptionResource: .shared
+        subscriptionResource: .shared,
+        trackingSystem: GoogleAnalytics.shared
     )
     
     @Namespace
@@ -34,8 +35,15 @@ struct MainView: View {
                         .font(.system(size: 52, weight: .semibold, design: .monospaced))
                         .foregroundColor(viewModel.color)
                         .padding(.top, 24)
-                    grid(size: proxy.size)
-                        .padding(.top, 24)
+                    
+                    if viewModel.isProgress {
+                        ProgressView().progressViewStyle(.circular)
+                            .accentColor(viewModel.color)
+                            .scaleEffect(x: 2, y: 2, anchor: .center)
+                    } else {
+                        grid(size: proxy.size)
+                            .padding(.top, 24)
+                    }
                     if !viewModel.isIntroduction {
                         Text("more coming soon")
                             .font(.system(size: 12, weight: .semibold, design: .monospaced))
@@ -43,8 +51,6 @@ struct MainView: View {
                             .padding(.top, 8)
                     }
                     Spacer(minLength: 60)
-                }.task {
-                    await viewModel.load()
                 }
             }
             
@@ -92,6 +98,21 @@ struct MainView: View {
                     viewModel.pressShare()
                 }).padding(12)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            ZStack {
+                ZStack(alignment: .center) {
+                    Image(systemName: "gearshape")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(viewModel.color)
+                }
+                .frame(width: 60, height: 60)
+                .background(.ultraThickMaterial)
+                .cornerRadius(30)
+                .gesture(TapGesture().onEnded() {
+                    viewModel.pressSettings()
+                }).padding(12)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
         .preferredColorScheme(.light)
 #if os(iOS)
@@ -103,9 +124,15 @@ struct MainView: View {
         .sheet(isPresented: $viewModel.isSubscriptionOpen, content: {
             SubscriptionView()
         })
+        .sheet(isPresented: $viewModel.isSettingsOpen, content: {
+            SettingsView()
+        })
 #endif
         .background(.white)
         .environmentObject(viewModel)
+        .task {
+            await viewModel.onAppear()
+        }
     }
 
     private func grid(size: CGSize) -> some View {
